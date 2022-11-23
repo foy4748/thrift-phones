@@ -78,13 +78,15 @@ export default function AuthContext({ children }) {
   //POST USER DATA on MONGODB WHILE CREATING NEW USER
   const postUserOnMongo = async (user, role) => {
     try {
-      user["role"] = [role];
+      const { uid, email } = user;
+      const userObj = { uid, email, role: [role] };
+      const payload = JSON.stringify(userObj);
       const options = {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(user),
+        body: payload,
       };
       const res = await fetch(`${SERVER}/users`, options);
       const result = await res.json();
@@ -113,6 +115,7 @@ export default function AuthContext({ children }) {
     logOutHandler,
     requestToken,
     setAuthLoading,
+    postUserOnMongo,
   };
   //------------------------------
   return (

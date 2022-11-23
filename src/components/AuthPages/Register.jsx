@@ -52,16 +52,15 @@ export default function Register() {
     const profileObj = { displayName, photoURL };
 
     let role = form.role.value;
-    console.log(role);
 
     registerHandler(email, password)
       .then(async ({ user }) => {
         await requestToken(user.uid);
-        await postUserOnMongo(user, (role = "buyer"));
+        await postUserOnMongo(user, role);
         setActiveUser(user);
-        form.reset();
         toast.success("Successfully Registered New Account");
         if (displayName && photoURL) {
+          setLoading(true);
           handleUpdate(profileObj);
         }
         if (location?.state?.from) {
@@ -72,8 +71,10 @@ export default function Register() {
           navigate(location?.state?.prev, { replace: true });
           return;
         }
+        form.reset();
       })
       .catch((error) => {
+        console.error(error);
         toast.error("FAILED to Register");
         setAuthLoading(false);
         setError(error);
@@ -82,7 +83,7 @@ export default function Register() {
   // For adding displayName and photoURL
   const handleUpdate = (profileObj) => {
     updateUserProfile(profileObj)
-      .then(() => {})
+      .then(() => setLoading(false))
       .catch((error) => console.error(error));
   };
 
@@ -175,7 +176,6 @@ export default function Register() {
         <Form.Group className="mb-3" controlId="formBasicFullName">
           <Form.Label>Select Role</Form.Label>
           <Form.Select aria-label="Default select example" name="role">
-            <option>Open this select menu</option>
             <option value="buyer">Buyer</option>
             <option value="seller">Seller</option>
           </Form.Select>
