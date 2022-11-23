@@ -1,6 +1,9 @@
+const SERVER =
+  import.meta.env.VITE_SERVER_ADDRESS || import.meta.env.VITE_DEV_SERVER;
+
 //import styles from "./Navbar.module.css";
 import { NavLink, Link, useLocation, useNavigate } from "react-router-dom";
-import { useRef, useContext } from "react";
+import { useRef, useContext, useEffect, useState } from "react";
 
 const AppName = import.meta.env.VITE_AppName;
 
@@ -8,6 +11,7 @@ import {
   Container,
   Nav,
   Navbar,
+  NavDropdown,
   OverlayTrigger,
   Tooltip,
   Image,
@@ -27,11 +31,19 @@ const auth = getAuth(firebaseApp);
 export default function NavBar({ darkActive, setDarkActive }) {
   // Executing Hooks
   const { setActiveUser, logOutHandler, authLoading } = useContext(userContext);
+  const [categories, setCategories] = useState([]);
   const location = useLocation();
   const navigate = useNavigate();
 
   const activeUser = auth.currentUser;
   //--------------------------------------
+
+  useEffect(() => {
+    fetch(`${SERVER}/categories`)
+      .then((res) => res.json())
+      .then((data) => setCategories(data))
+      .catch((error) => console.error(error));
+  });
 
   // Event Handlers
   const toggleButton = useRef();
@@ -183,9 +195,14 @@ export default function NavBar({ darkActive, setDarkActive }) {
           />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link as={NavLink} onClick={closeMenu} to="/services">
-                Services
-              </Nav.Link>
+              <NavDropdown title="Category" id="basic-nav-dropdown">
+                {categories.length &&
+                  categories.map(({ _id, category_name }) => (
+                    <NavDropdown.Item as={Link} to={`category/${_id}`}>
+                      {category_name}
+                    </NavDropdown.Item>
+                  ))}
+              </NavDropdown>
               <Nav.Link as={NavLink} onClick={closeMenu} to="/blogs">
                 Blogs
               </Nav.Link>
