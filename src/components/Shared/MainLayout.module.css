@@ -1,0 +1,41 @@
+.mainContainer {
+  margin-top: 3.5rem;
+  border-bottom: 1px solid #00b8cb52;
+  padding: 2rem;
+  min-height: 80vh;
+}
+
+.mainContainer a {
+  color: #00b8cb;
+  text-decoration: none;
+}
+
+.mainContainer a::marker {
+  color: #00b8cb;
+}
+
+.mainContainer ol {
+  counter-reset: item;
+  padding: 0;
+}
+.mainContainer li {
+  list-style: none;
+}
+.mainContainer ol li:before {
+  content: counter(item) ". ";
+  counter-increment: item;
+  color: #00b8cb;
+}
+
+.darkTheme {
+  background-color: #272935 !important;
+  color: lightgray !important;
+}
+
+@media screen and (min-width: 768px) {
+  .mainContainer {
+    margin-top: 3.5rem;
+    border-bottom: 1px solid #00b8cb52;
+    padding: 2rem 4rem;
+  }
+}

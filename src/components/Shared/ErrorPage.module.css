@@ -1,0 +1,18 @@
+.errorPageContainer {
+  margin: 4rem;
+}
+.backButton {
+  display: block;
+  margin: 0.75rem 0;
+  background-color: darkblue;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  font-weight: 700;
+}
+
+@media screen and (max-width: 600px) {
+  .errorPageContainer {
+    margin: 1rem;
+  }
+}

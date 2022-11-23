@@ -1,0 +1,134 @@
+:root {
+  /*
+  --primary-color: #686dffa8;
+  */
+  --primary-color: #00b8cb;
+}
+
+/* Utilities */
+.text-justify {
+  text-align: justify;
+}
+
+.brandLogo {
+  width: 1.5rem;
+}
+
+.cardImg {
+  width: 100%;
+}
+
+.featureCard {
+  width: 100%;
+  max-height: 20rem;
+  object-fit: cover;
+  filter: brightness(50%);
+}
+.widget-svg {
+  width: 2rem !important;
+  height: 2rem !important;
+}
+
+.userReviewIcon {
+  width: 2.75rem;
+  max-height: 2.75rem;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+.userIcon {
+  width: 1.75rem;
+  max-height: 1.75rem;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+.btnPrimary {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  font-weight: 700;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1.5rem;
+}
+.cardBtn {
+  color: white;
+  border-radius: 0 0 0.3rem 0.3rem;
+  background-color: var(--primary-color);
+  border: none;
+  font-weight: 700;
+  width: 100%;
+}
+
+.detailsImg {
+  width: 100%;
+}
+
+.form-container {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Carausel Styling */
+.carauselContainer {
+  width: 100%;
+}
+
+.carauselImg {
+  object-fit: cover;
+  min-height: 70vh;
+  max-height: 80vh;
+  filter: contrast(90%) brightness(50%);
+}
+
+.centeringCaption {
+  top: 10%;
+}
+
+.leftPart {
+  text-align: left;
+}
+
+.rightPart {
+  text-align: left;
+}
+
+.overflowControl {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+@media screen and (min-width: 998px) {
+  .leftPart {
+    text-align: right;
+  }
+}
+@media screen and (min-width: 768px) {
+  /* Utilities */
+  .cardImg {
+    width: 100%;
+    min-height: 20rem;
+    object-fit: cover;
+  }
+
+  .detailsImg {
+    width: 100%;
+    min-width: 40rem;
+  }
+
+  .min-card-height {
+    min-height: 36rem;
+  }
+
+  .featureCard {
+    width: 100%;
+    max-height: 20rem;
+    object-fit: cover;
+    filter: brightness(50%);
+  }
+  .overflowControl {
+    text-overflow: inherit;
+    overflow: inherit;
+    white-space: inherit;
+  }
+}
