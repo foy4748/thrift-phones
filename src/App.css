@@ -107,7 +107,8 @@
   /* Utilities */
   .cardImg {
     width: 100%;
-    min-height: 20rem;
+    min-height: 30rem;
+    max-height: 30rem;
     object-fit: cover;
   }
 

@@ -1,15 +1,24 @@
+const SERVER =
+  import.meta.env.VITE_SERVER_ADDRESS || import.meta.env.VITE_DEV_SERVER;
+
 import { Form } from "react-bootstrap";
 import useGetCategories from "../../Hooks/useGetCategories";
 import { useForm } from "react-hook-form";
+
+// Auth Related
 import { userContext } from "../../Contexts/AuthContext";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Loader from "../Shared/Loader";
+
+import toast from "react-hot-toast";
 
 // Validate Inputs later
 // Add Photo Upload later
 
 export default function AddAProduct() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -20,12 +29,30 @@ export default function AddAProduct() {
   const [categories, categoriesLoading] = useGetCategories();
   const { activeUser, authLoading } = useContext(userContext);
 
-  const formSubmission = (data) => {
-    console.log(data);
-    if (data.categoryId == "false") {
-      console.log("hit");
+  const formSubmission = async (data) => {
+    data["postedTime"] = new Date();
+    data["seller_uid"] = activeUser.uid;
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    };
+    try {
+      const res = await fetch(`${SERVER}/products`, options);
+      const result = await res.json();
+      if (result.acknowledged) {
+        toast.success("Successfully POSTed product");
+        reset();
+        navigate("/my-products");
+      } else {
+        toast.error("FAILED to post product");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("FAILED to post product");
     }
-    console.log(activeUser.uid);
   };
   if (authLoading || categoriesLoading) {
     return <Loader />;
