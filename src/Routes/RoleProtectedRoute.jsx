@@ -13,6 +13,7 @@ export default function RoleProtectedRoute({ children, role }) {
   const location = useLocation();
   const [userRole, userRoleLoading] = useCheckRole(activeUser?.uid, role);
 
+	console.log(authLoading, userRoleLoading)
   if (authLoading || userRoleLoading) {
     return (
       <div>
