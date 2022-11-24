@@ -2,13 +2,14 @@ const SERVER =
   import.meta.env.VITE_SERVER_ADDRESS || import.meta.env.VITE_DEV_SERVER;
 
 import Loader from "../Shared/Loader";
-import { Table, Container } from "react-bootstrap";
+import { Table, Container, Button } from "react-bootstrap";
+import toast from "react-hot-toast";
 
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+
 export default function AllSellers() {
   let role = "seller";
-
   const {
     data: allSellers,
     status,
@@ -23,7 +24,7 @@ export default function AllSellers() {
   });
 
   // Make Verified Seller
-  const makeVerified = async (id, verified) => {
+  const makeVerified = async (id, verified, displayName) => {
     const url = `${SERVER}/users`;
     try {
       const options = {
@@ -35,10 +36,19 @@ export default function AllSellers() {
 
       const patch = { verified: !verified };
       const { data } = await axios.patch(url, patch, options);
-      console.log(data);
+      if (data.acknowledged) {
+        toast.success(
+          `${displayName} is now ${
+            !verified ? "verified seller!!" : "ordinary seller."
+          }`
+        );
+      } else {
+        toast.error("Something went wrong");
+      }
       refetch();
     } catch (error) {
       console.error(error);
+      toast.error("Something went wrong");
     }
   };
 
@@ -68,15 +78,19 @@ export default function AllSellers() {
                     <td>{displayName}</td>
                     <td>{email}</td>
                     <td>
-                      <button className="btn btn-danger">Delete</button>
+                      <Button variant="danger" size="sm" className="m-0">
+                        Delete
+                      </Button>
                     </td>
-                    <td>
-                      <button
-                        className="btn btn-primary"
-                        onClick={() => makeVerified(_id, verified)}
+                    <td className="d-flex justify-content-center">
+                      <Button
+                        className="m-0"
+                        variant={verified ? "warning" : "primary"}
+                        size="sm"
+                        onClick={() => makeVerified(_id, verified, displayName)}
                       >
-                        {verified ? "Undo" : "Make Verified"}
-                      </button>
+                        {verified ? "Undo" : "Verify"}
+                      </Button>
                     </td>
                   </tr>
                 );
