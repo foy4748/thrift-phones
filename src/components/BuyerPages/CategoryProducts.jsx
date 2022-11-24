@@ -1,40 +1,41 @@
 const SERVER =
   import.meta.env.VITE_SERVER_ADDRESS || import.meta.env.VITE_DEV_SERVER;
 
-import { Card, Row, Col, Container } from "react-bootstrap";
+import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+
+import { Card, Row, Col, Container } from "react-bootstrap";
+import Loader from "../Shared/Loader";
 import moment from "moment";
 
-// Auth Related
-import { userContext } from "../../Contexts/AuthContext";
-import { useContext } from "react";
+export default function CategoryProducts() {
+  const { categoryId } = useParams();
 
-import Loader from "../Shared/Loader";
-
-export default function MyProducts() {
-  const { activeUser } = useContext(userContext);
-  // Loading Data
-  const seller_uid = activeUser?.uid;
-  const { data: myproducts, status } = useQuery({
-    queryKey: [seller_uid],
+  const { data: categoryProducts, status } = useQuery({
+    queryKey: [categoryId],
     queryFn: async () => {
-      const url = `${SERVER}/products?seller_uid=${seller_uid}`;
+      const url = `${SERVER}/products?categoryId=${categoryId}`;
+      const categoryName = await fetch(
+        `${SERVER}/categories?categoryId=${categoryId}`
+      );
       const res = await fetch(url);
-      const data = await res.json();
+
+      const category = await categoryName.json();
+      const products = await res.json();
+      const data = { category: category[0], products };
       return data;
     },
   });
-
-  if (status === "loading" || !myproducts.length) {
+  if (status === "loading") {
     return <Loader />;
   }
   return (
     <div>
-      <h1>My Products</h1>
+      <h1>{categoryProducts.category.category_name}</h1>
       <Container>
         <Row xs={1} md={2} lg={3}>
-          {myproducts.length &&
-            myproducts.map(
+          {categoryProducts.products.length &&
+            categoryProducts.products.map(
               ({ _id, photoURL, productName, description, postedTime }) => {
                 return (
                   <Col key={_id}>
