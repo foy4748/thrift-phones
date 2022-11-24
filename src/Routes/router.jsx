@@ -7,6 +7,7 @@ import Home from "../components/Home/Home";
 // Route handlers
 import ErrorPage from "../components/Shared/ErrorPage";
 //import PrivateRoute from "./PrivateRoute";
+import RoleProtectedRoute from "./RoleProtectedRoute";
 
 // Auth Pages
 import Login from "../components/AuthPages/Login";
@@ -50,11 +51,19 @@ const routerObj = [
       },
       {
         path: "/add-product",
-        element: <AddAProduct />,
+        element: (
+          <RoleProtectedRoute role="seller">
+            <AddAProduct />
+          </RoleProtectedRoute>
+        ),
       },
       {
         path: "/my-products",
-        element: <MyProducts />,
+        element: (
+          <RoleProtectedRoute role="seller">
+            <MyProducts />
+          </RoleProtectedRoute>
+        ),
       },
       {
         path: "/blogs",
