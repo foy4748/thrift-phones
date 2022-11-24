@@ -56,7 +56,7 @@ export default function Register() {
     registerHandler(email, password)
       .then(async ({ user }) => {
         await requestToken(user.uid);
-        await postUserOnMongo(user, role);
+        await postUserOnMongo(user, role, displayName, photoURL);
         setActiveUser(user);
         toast.success("Successfully Registered New Account");
         if (displayName && photoURL) {

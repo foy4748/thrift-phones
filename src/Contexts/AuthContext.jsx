@@ -76,10 +76,10 @@ export default function AuthContext({ children }) {
   };
 
   //POST USER DATA on MONGODB WHILE CREATING NEW USER
-  const postUserOnMongo = async (user, role) => {
+  const postUserOnMongo = async (user, role, displayName, photoURL) => {
     try {
       const { uid, email } = user;
-      const userObj = { uid, email, role: [role] };
+      const userObj = { uid, email, role: [role], displayName, photoURL };
       const payload = JSON.stringify(userObj);
       const options = {
         method: "POST",
