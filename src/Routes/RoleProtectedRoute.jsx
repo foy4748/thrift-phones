@@ -24,6 +24,7 @@ export default function RoleProtectedRoute({ children, role }) {
   if (activeUser && userRole) {
     return children;
   }
+
   logOutHandler()
     .then(() => {
       toast.error(`Please, Login using ${role.toUpperCase()} account`);

@@ -2,6 +2,7 @@
 import { NavLink, Link, useLocation, useNavigate } from "react-router-dom";
 import { useRef, useContext } from "react";
 import useGetCategories from "../../Hooks/useGetCategories";
+import useCheckRole from "../../Hooks/useCheckRole";
 
 const AppName = import.meta.env.VITE_AppName;
 
@@ -34,6 +35,11 @@ export default function NavBar({ darkActive, setDarkActive }) {
   const navigate = useNavigate();
 
   const activeUser = auth.currentUser;
+  const [sellerRole, sellerRoleLoading] = useCheckRole(
+    activeUser?.uid,
+    "seller"
+  );
+  const [adminRole, adminRoleLoading] = useCheckRole(activeUser?.uid, "admin");
   //--------------------------------------
 
   // Event Handlers
@@ -111,27 +117,54 @@ export default function NavBar({ darkActive, setDarkActive }) {
       </>
     );
   };
-  // Add a Product Nav items
+
+  // Role Based Routes
   const privateNavItems = () => {
-    return (
-      <>
-        <Nav.Link as={NavLink} onClick={closeMenu} to="/add-product">
-          Add a product
-        </Nav.Link>
-        <Nav.Link as={NavLink} onClick={closeMenu} to="/my-products">
-          My Products
-        </Nav.Link>
-        <Nav.Link
-          onClick={() => {
-            closeMenu();
-            handleLogOut();
-          }}
-          to="#"
-        >
-          Log Out
-        </Nav.Link>{" "}
-      </>
-    );
+    if (adminRoleLoading || sellerRoleLoading) {
+      return (
+        <>
+          <NavDropdown.Item as={Link} to="/" onClick={closeMenu}>
+            Loading...
+          </NavDropdown.Item>
+        </>
+      );
+    }
+
+    if (!adminRole && !sellerRole) {
+      return (
+        <>
+          <NavDropdown.Item as={Link} to="/my-orders" onClick={closeMenu}>
+            My Orders
+          </NavDropdown.Item>
+        </>
+      );
+    }
+
+    if (adminRole) {
+      return (
+        <>
+          <NavDropdown.Item as={Link} to="/all-buyers" onClick={closeMenu}>
+            All Buyers
+          </NavDropdown.Item>
+          <NavDropdown.Item as={Link} to="/all-sellers" onClick={closeMenu}>
+            All Sellers
+          </NavDropdown.Item>
+        </>
+      );
+    }
+
+    if (sellerRole) {
+      return (
+        <>
+          <NavDropdown.Item as={Link} to="/add-product" onClick={closeMenu}>
+            Add a product
+          </NavDropdown.Item>
+          <NavDropdown.Item as={Link} to="/my-products" onClick={closeMenu}>
+            My Products
+          </NavDropdown.Item>
+        </>
+      );
+    }
   };
   //-------------------------
 
@@ -186,7 +219,7 @@ export default function NavBar({ darkActive, setDarkActive }) {
           />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <NavDropdown title="Category" id="basic-nav-dropdown">
+              <NavDropdown title="Category" id="category-nav-dropdown">
                 {categories.length &&
                   categories.map(({ _id, category_name }) => (
                     <NavDropdown.Item
@@ -198,12 +231,34 @@ export default function NavBar({ darkActive, setDarkActive }) {
                     </NavDropdown.Item>
                   ))}
               </NavDropdown>
+              {(activeUser && activeUser?.uid && (
+                <NavDropdown title="Dashboard" id="dashboard-nav-dropdown">
+                  {privateNavItems()}
+                </NavDropdown>
+              )) || (
+                <>
+                  {" "}
+                  <Nav.Link to="/"> Loading... </Nav.Link>
+                </>
+              )}
               <Nav.Link as={NavLink} onClick={closeMenu} to="/blogs">
                 Blogs
               </Nav.Link>
-              {activeUser && activeUser.uid && privateNavItems()}
             </Nav>
             <Nav>
+              {activeUser && activeUser?.uid && (
+                <>
+                  <Nav.Link
+                    onClick={() => {
+                      closeMenu();
+                      handleLogOut();
+                    }}
+                    to="#"
+                  >
+                    Log Out
+                  </Nav.Link>
+                </>
+              )}
               {darkActive ? dark : light}
               {activeUser && activeUser?.uid ? (
                 logoutNavItem()
