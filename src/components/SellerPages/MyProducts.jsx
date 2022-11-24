@@ -9,10 +9,14 @@ import moment from "moment";
 import { userContext } from "../../Contexts/AuthContext";
 import { useContext } from "react";
 
+import useCheckRole from "../../Hooks/useCheckRole";
+
 import Loader from "../Shared/Loader";
 
 export default function MyProducts() {
   const { activeUser } = useContext(userContext);
+  const [userRole, userRoleLoading] = useCheckRole(activeUser?.uid, "seller");
+  console.log(userRole);
   // Loading Data
   const seller_uid = activeUser?.uid;
   const { data: myproducts, status } = useQuery({
@@ -25,8 +29,11 @@ export default function MyProducts() {
     },
   });
 
-  if (status === "loading" || !myproducts.length) {
+  if (status === "loading") {
     return <Loader />;
+  }
+  if (myproducts.length === 0) {
+    return <h1>No Products online</h1>;
   }
   return (
     <div>
