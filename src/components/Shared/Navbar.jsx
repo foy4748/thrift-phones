@@ -1,9 +1,7 @@
-const SERVER =
-  import.meta.env.VITE_SERVER_ADDRESS || import.meta.env.VITE_DEV_SERVER;
-
 //import styles from "./Navbar.module.css";
 import { NavLink, Link, useLocation, useNavigate } from "react-router-dom";
-import { useRef, useContext, useEffect, useState } from "react";
+import { useRef, useContext } from "react";
+import useGetCategories from "../../Hooks/useGetCategories";
 
 const AppName = import.meta.env.VITE_AppName;
 
@@ -31,19 +29,12 @@ const auth = getAuth(firebaseApp);
 export default function NavBar({ darkActive, setDarkActive }) {
   // Executing Hooks
   const { setActiveUser, logOutHandler, authLoading } = useContext(userContext);
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useGetCategories();
   const location = useLocation();
   const navigate = useNavigate();
 
   const activeUser = auth.currentUser;
   //--------------------------------------
-
-  useEffect(() => {
-    fetch(`${SERVER}/categories`)
-      .then((res) => res.json())
-      .then((data) => setCategories(data))
-      .catch((error) => console.error(error));
-  });
 
   // Event Handlers
   const toggleButton = useRef();
@@ -120,15 +111,15 @@ export default function NavBar({ darkActive, setDarkActive }) {
       </>
     );
   };
-  // My Reviews , Add a service, Logout buttons
+  // Add a Product Nav items
   const privateNavItems = () => {
     return (
       <>
-        <Nav.Link as={NavLink} onClick={closeMenu} to="/my-reviews">
-          My Reviews
+        <Nav.Link as={NavLink} onClick={closeMenu} to="/add-product">
+          Add a product
         </Nav.Link>
-        <Nav.Link as={NavLink} onClick={closeMenu} to="/add-service">
-          Add Service
+        <Nav.Link as={NavLink} onClick={closeMenu} to="/my-products">
+          My Products
         </Nav.Link>
         <Nav.Link
           onClick={() => {
@@ -198,7 +189,11 @@ export default function NavBar({ darkActive, setDarkActive }) {
               <NavDropdown title="Category" id="basic-nav-dropdown">
                 {categories.length &&
                   categories.map(({ _id, category_name }) => (
-                    <NavDropdown.Item as={Link} to={`category/${_id}`}>
+                    <NavDropdown.Item
+                      as={Link}
+                      to={`category/${_id}`}
+                      key={_id}
+                    >
                       {category_name}
                     </NavDropdown.Item>
                   ))}

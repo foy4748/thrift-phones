@@ -15,6 +15,10 @@ import Register from "../components/AuthPages/Register";
 // Testing Purpose
 //import Test from "../components/Shared/Test";
 
+// Add a Product
+import AddAProduct from "../components/SellerPages/AddAProduct";
+import MyProducts from "../components/SellerPages/MyProducts";
+
 // Blog Page
 import Blogs from "../components/Blogs/Blogs";
 
@@ -36,6 +40,14 @@ const routerObj = [
       {
         path: "/register",
         element: <Register />,
+      },
+      {
+        path: "/add-product",
+        element: <AddAProduct />,
+      },
+      {
+        path: "/my-products",
+        element: <MyProducts />,
       },
       {
         path: "/blogs",
