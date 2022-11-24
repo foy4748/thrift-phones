@@ -39,6 +39,7 @@ export default function AddAProduct() {
       },
       body: JSON.stringify(data),
     };
+
     try {
       const res = await fetch(`${SERVER}/products`, options);
       const result = await res.json();

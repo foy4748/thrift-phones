@@ -23,6 +23,10 @@ import CategoryProducts from "../components/BuyerPages/CategoryProducts";
 import AddAProduct from "../components/SellerPages/AddAProduct";
 import MyProducts from "../components/SellerPages/MyProducts";
 
+// Admin Pages
+import AllBuyers from "../components/AdminPages/AllBuyers";
+import AllSellers from "../components/AdminPages/AllSellers";
+
 // Blog Page
 import Blogs from "../components/Blogs/Blogs";
 
@@ -62,6 +66,22 @@ const routerObj = [
         element: (
           <RoleProtectedRoute role="seller">
             <MyProducts />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: "/all-buyers",
+        element: (
+          <RoleProtectedRoute role="admin">
+            <AllBuyers />
+          </RoleProtectedRoute>
+        ),
+      },
+      {
+        path: "/all-sellers",
+        element: (
+          <RoleProtectedRoute role="admin">
+            <AllSellers />
           </RoleProtectedRoute>
         ),
       },

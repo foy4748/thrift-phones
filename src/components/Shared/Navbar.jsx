@@ -231,15 +231,10 @@ export default function NavBar({ darkActive, setDarkActive }) {
                     </NavDropdown.Item>
                   ))}
               </NavDropdown>
-              {(activeUser && activeUser?.uid && (
+              {activeUser && activeUser?.uid && (
                 <NavDropdown title="Dashboard" id="dashboard-nav-dropdown">
                   {privateNavItems()}
                 </NavDropdown>
-              )) || (
-                <>
-                  {" "}
-                  <Nav.Link to="/"> Loading... </Nav.Link>
-                </>
               )}
               <Nav.Link as={NavLink} onClick={closeMenu} to="/blogs">
                 Blogs

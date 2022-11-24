@@ -25,7 +25,7 @@ export default function useCheckRole(uid, role) {
           setUserRoleLoading(false);
         });
     }
-  });
+  }, []);
 
   return [userRole, userRoleLoading];
 }
