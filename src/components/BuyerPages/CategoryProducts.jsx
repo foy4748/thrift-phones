@@ -11,6 +11,8 @@ import { useContext } from "react";
 import { Row, Container } from "react-bootstrap";
 import Loader from "../Shared/Loader";
 
+import toast from "react-hot-toast";
+
 import ProductCard from "../BuyerPages/ProductCard";
 import BookingModal from "./BookingModal";
 
@@ -63,9 +65,19 @@ export default function CategoryProducts() {
       },
       body: JSON.stringify({ product_id, seller_id, buyer_uid: uid }),
     };
-    const res = await fetch(`${SERVER}/wishlist`, options);
-    const result = await res.json();
-    console.log(result);
+    try {
+      const res = await fetch(`${SERVER}/wishlist`, options);
+      const result = await res.json();
+      if (result.acknowledged) {
+        toast.success("Added to your Wish List");
+      } else {
+        console.error(result);
+        toast.error("Failed to add product to Wish List");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to add product to Wish List");
+    }
   };
 
   if (status === "loading") {

@@ -19,6 +19,7 @@ import Register from "../components/AuthPages/Register";
 // Buyer Pages
 import CategoryProducts from "../components/BuyerPages/CategoryProducts";
 import MyOrders from "../components/BuyerPages/MyOrders";
+import MyWishList from "../components/BuyerPages/MyWishList";
 
 // Seller Pages
 import AddAProduct from "../components/SellerPages/AddAProduct";
@@ -60,6 +61,16 @@ const routerObj = [
           <PrivateRoute>
             <RoleProtectedRoute role="buyer">
               <MyOrders />
+            </RoleProtectedRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/my-wishlist",
+        element: (
+          <PrivateRoute>
+            <RoleProtectedRoute role="buyer">
+              <MyWishList />
             </RoleProtectedRoute>
           </PrivateRoute>
         ),

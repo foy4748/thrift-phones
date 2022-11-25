@@ -136,6 +136,9 @@ export default function NavBar({ darkActive, setDarkActive }) {
           <NavDropdown.Item as={Link} to="/my-orders" onClick={closeMenu}>
             My Orders
           </NavDropdown.Item>
+          <NavDropdown.Item as={Link} to="/my-wishlist" onClick={closeMenu}>
+            My Wish List
+          </NavDropdown.Item>
         </>
       );
     }

@@ -29,7 +29,7 @@ export default function MyOrders() {
   }
   if (!myOrders?.length) {
     return (
-      <div>
+      <div key={"randomKeyss"}>
         <h1>No orders yet</h1>
       </div>
     );
@@ -49,7 +49,7 @@ export default function MyOrders() {
             </tr>
           </thead>
           <tbody>
-            {myOrders?.length &&
+            {myOrders?.length !== 0 &&
               myOrders.map(
                 (
                   {
@@ -62,7 +62,7 @@ export default function MyOrders() {
                   idx
                 ) => {
                   return (
-                    <tr key={product_id}>
+                    <tr key={product_id || idx}>
                       <td>{idx + 1}</td>
                       <td>
                         <picture>
