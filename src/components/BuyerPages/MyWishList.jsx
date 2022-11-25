@@ -70,6 +70,14 @@ export default function MyWishList() {
     return <Loader />;
   }
 
+  if (myWishListProducts?.length === 0) {
+    return (
+      <div>
+        <h1>No products in wish list yet</h1>
+      </div>
+    );
+  }
+
   const payload = {
     isOpenBookingModal,
     handleClose,

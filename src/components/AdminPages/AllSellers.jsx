@@ -24,13 +24,14 @@ export default function AllSellers() {
   });
 
   // Make Verified Seller
-  const makeVerified = async (id, verified, displayName) => {
+  const makeVerified = async (id, uid, verified, displayName) => {
     const url = `${SERVER}/users`;
     try {
       const options = {
         headers: {
           "Content-Type": "application/json",
           user_id: id,
+          user_uid: uid,
         },
       };
 
@@ -71,30 +72,34 @@ export default function AllSellers() {
           </thead>
           <tbody>
             {allSellers?.length &&
-              allSellers.map(({ _id, displayName, email, verified }, idx) => {
-                return (
-                  <tr key={_id}>
-                    <td>{idx + 1}</td>
-                    <td>{displayName}</td>
-                    <td>{email}</td>
-                    <td>
-                      <Button variant="danger" size="sm" className="m-0">
-                        Delete
-                      </Button>
-                    </td>
-                    <td className="d-flex justify-content-center">
-                      <Button
-                        className="m-0"
-                        variant={verified ? "warning" : "primary"}
-                        size="sm"
-                        onClick={() => makeVerified(_id, verified, displayName)}
-                      >
-                        {verified ? "Undo" : "Verify"}
-                      </Button>
-                    </td>
-                  </tr>
-                );
-              })}
+              allSellers.map(
+                ({ _id, uid, displayName, email, verified }, idx) => {
+                  return (
+                    <tr key={_id}>
+                      <td>{idx + 1}</td>
+                      <td>{displayName}</td>
+                      <td>{email}</td>
+                      <td>
+                        <Button variant="danger" size="sm" className="m-0">
+                          Delete
+                        </Button>
+                      </td>
+                      <td className="d-flex justify-content-center">
+                        <Button
+                          className="m-0"
+                          variant={verified ? "warning" : "primary"}
+                          size="sm"
+                          onClick={() =>
+                            makeVerified(_id, uid, verified, displayName)
+                          }
+                        >
+                          {verified ? "Undo" : "Verify"}
+                        </Button>
+                      </td>
+                    </tr>
+                  );
+                }
+              )}
           </tbody>
         </Table>
       </Container>

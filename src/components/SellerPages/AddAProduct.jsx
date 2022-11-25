@@ -31,7 +31,8 @@ export default function AddAProduct() {
 
   const formSubmission = async (data) => {
     data["postedTime"] = new Date();
-    data["seller_uid"] = activeUser.uid;
+    data["seller_uid"] = activeUser?.uid;
+    data["sellerName"] = activeUser?.displayName;
     const options = {
       method: "POST",
       headers: {

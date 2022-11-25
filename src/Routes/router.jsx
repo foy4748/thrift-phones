@@ -53,7 +53,11 @@ const routerObj = [
       },
       {
         path: "/category/:categoryId",
-        element: <CategoryProducts />,
+        element: (
+          <PrivateRoute>
+            <CategoryProducts />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/my-orders",
