@@ -12,7 +12,7 @@ export default function FooterSection() {
               <div className="col-md-6 mt-md-0 mt-3">
                 <h5 className="text-uppercase">{AppName}</h5>
                 <p>
-                  <strong>No Pain No Gain is an exception here</strong>
+                  <strong>BUY PHONES WITHOUT HURTING YOUR POCKET</strong>
                 </p>
               </div>
 

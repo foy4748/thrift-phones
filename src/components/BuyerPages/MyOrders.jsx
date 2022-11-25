@@ -78,10 +78,12 @@ export default function MyOrders() {
                       <td>
                         {!paymentStatus ? (
                           <Link to={`/my-orders/${product_id}`}>
-                            <Button>Pay</Button>
+                            <Button size="sm">Pay</Button>
                           </Link>
                         ) : (
-                          <Button disabled>Paid</Button>
+                          <Button disabled size="sm">
+                            Paid
+                          </Button>
                         )}
                       </td>
                     </tr>

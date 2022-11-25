@@ -95,6 +95,7 @@
 .tableImgIcon {
   max-width: 5rem;
   min-width: 5rem;
+  object-fit: cover;
 }
 
 .overflowControl {
