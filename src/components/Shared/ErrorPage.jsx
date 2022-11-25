@@ -10,6 +10,13 @@ export default function ErrorPage() {
             Go back home
           </Link>
         </p>
+        <div className="d-flex justify-content-center">
+          <img
+            className="img img-fluid w-50"
+            src="/errorPageImg.jpg"
+            alt="404 Error Page Cover Image"
+          />
+        </div>
       </div>
     </>
   );

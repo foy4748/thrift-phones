@@ -18,6 +18,7 @@ import Register from "../components/AuthPages/Register";
 
 // Buyer Pages
 import CategoryProducts from "../components/BuyerPages/CategoryProducts";
+import MyOrders from "../components/BuyerPages/MyOrders";
 
 // Seller Pages
 import AddAProduct from "../components/SellerPages/AddAProduct";
@@ -52,6 +53,10 @@ const routerObj = [
       {
         path: "/category/:categoryId",
         element: <CategoryProducts />,
+      },
+      {
+        path: "/my-orders",
+        element: <MyOrders />,
       },
       {
         path: "/add-product",
