@@ -4,9 +4,16 @@ import Loader from "../Shared/Loader";
 const SERVER =
   import.meta.env.VITE_SERVER_ADDRESS || import.meta.env.VITE_DEV_SERVER;
 
+import toast from "react-hot-toast";
+
 export default function BookingModal({ payload }) {
-  const { isOpenBookingModal, handleClose, activeProduct, activeUser } =
-    payload;
+  const {
+    isOpenBookingModal,
+    handleClose,
+    activeProduct,
+    activeUser,
+    refetch,
+  } = payload;
 
   if (!activeUser || !activeProduct) {
     return (
@@ -26,6 +33,7 @@ export default function BookingModal({ payload }) {
     const {
       _id: product_id,
       productName,
+      photoURL,
       originalPrice,
       resalePrice,
       seller_uid,
@@ -36,6 +44,7 @@ export default function BookingModal({ payload }) {
     const payload = {
       product_id,
       buyer_uid,
+      photoURL,
       seller_uid,
       displayName,
       email,
@@ -54,9 +63,22 @@ export default function BookingModal({ payload }) {
       body: JSON.stringify(payload),
     };
 
-    const res = await fetch(`${SERVER}/bookings`, options);
-    const result = await res.json();
-    console.log(result);
+    try {
+      const res = await fetch(`${SERVER}/bookings`, options);
+      const result = await res.json();
+      if (result.acknowledged) {
+        toast.success(`Successfully Booked ${productName}`);
+        handleClose();
+        refetch();
+      } else {
+        toast.error("FAILED to book product");
+        refetch();
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("FAILED to book product");
+      refetch();
+    }
   };
 
   return (

@@ -92,6 +92,11 @@
   text-align: left;
 }
 
+.tableImgIcon {
+  max-width: 5rem;
+  min-width: 5rem;
+}
+
 .overflowControl {
   text-overflow: ellipsis;
   overflow: hidden;

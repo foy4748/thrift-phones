@@ -92,6 +92,7 @@ export default function Register() {
     googleLoginHandler()
       .then(async ({ user }) => {
         await requestToken(user.uid);
+        await postUserOnMongo(user, "buyer", user.displayName, user.photoURL);
         toast.success("Successfully Registered New Account");
         setActiveUser(user);
         if (location?.state?.from) {

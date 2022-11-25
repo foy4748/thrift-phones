@@ -56,7 +56,13 @@ const routerObj = [
       },
       {
         path: "/my-orders",
-        element: <MyOrders />,
+        element: (
+          <PrivateRoute>
+            <RoleProtectedRoute role="buyer">
+              <MyOrders />
+            </RoleProtectedRoute>
+          </PrivateRoute>
+        ),
       },
       {
         path: "/add-product",

@@ -19,7 +19,11 @@ export default function CategoryProducts() {
   const [activeProduct, setActiveProduct] = useState(null);
   const { activeUser } = useContext(userContext);
 
-  const { data: categoryProducts, status } = useQuery({
+  const {
+    data: categoryProducts,
+    status,
+    refetch,
+  } = useQuery({
     queryKey: [categoryId],
     queryFn: async () => {
       const url = `${SERVER}/products?categoryId=${categoryId}`;
@@ -55,6 +59,7 @@ export default function CategoryProducts() {
     handleClose,
     activeProduct,
     activeUser,
+    refetch,
   };
   return (
     <div>
