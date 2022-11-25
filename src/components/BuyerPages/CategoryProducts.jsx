@@ -46,8 +46,6 @@ export default function CategoryProducts() {
     setIsOpenBookingModal(true);
   };
 
-  const handleSubmit = () => console.log(activeUser, activeProduct);
-
   if (status === "loading") {
     return <Loader />;
   }
@@ -55,7 +53,6 @@ export default function CategoryProducts() {
   const payload = {
     isOpenBookingModal,
     handleClose,
-    handleSubmit,
     activeProduct,
     activeUser,
   };
