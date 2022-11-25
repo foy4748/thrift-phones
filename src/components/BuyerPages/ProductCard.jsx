@@ -1,9 +1,20 @@
 import { Card, Col, Button } from "react-bootstrap";
 import moment from "moment";
 
-export default function ProductCard({ product, handleOpen }) {
-  const { _id, photoURL, productName, description, postedTime, booked } =
-    product;
+export default function ProductCard({
+  product,
+  handleOpen,
+  handleAddtoWishList,
+}) {
+  const {
+    _id,
+    photoURL,
+    productName,
+    description,
+    postedTime,
+    booked,
+    seller_uid,
+  } = product;
 
   return (
     <Col key={_id}>
@@ -23,6 +34,9 @@ export default function ProductCard({ product, handleOpen }) {
             onClick={() => handleOpen(_id)}
           >
             Book Now
+          </Button>
+          <Button onClick={() => handleAddtoWishList(_id, seller_uid)}>
+            Add to wish list
           </Button>
         </Card.Body>
         <Card.Footer>

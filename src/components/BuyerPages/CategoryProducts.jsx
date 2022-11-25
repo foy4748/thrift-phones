@@ -11,7 +11,7 @@ import { useContext } from "react";
 import { Row, Container } from "react-bootstrap";
 import Loader from "../Shared/Loader";
 
-import ProductCard from "../Shared/ProductCard";
+import ProductCard from "../BuyerPages/ProductCard";
 import BookingModal from "./BookingModal";
 
 export default function CategoryProducts() {
@@ -50,6 +50,24 @@ export default function CategoryProducts() {
     setIsOpenBookingModal(true);
   };
 
+  // Handle add to Wishlist
+  const handleAddtoWishList = async (
+    product_id,
+    seller_id,
+    uid = activeUser?.uid
+  ) => {
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ product_id, seller_id, buyer_uid: uid }),
+    };
+    const res = await fetch(`${SERVER}/wishlist`, options);
+    const result = await res.json();
+    console.log(result);
+  };
+
   if (status === "loading") {
     return <Loader />;
   }
@@ -74,6 +92,7 @@ export default function CategoryProducts() {
                   key={product._id}
                   product={product}
                   handleOpen={handleOpen}
+                  handleAddtoWishList={handleAddtoWishList}
                 />
               );
             })}
