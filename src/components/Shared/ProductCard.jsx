@@ -17,7 +17,7 @@ export default function ProductCard({ product, handleOpen }) {
           <Card.Title>{productName}</Card.Title>
           <Card.Text>{description}</Card.Text>
           <Button variant="primary" onClick={() => handleOpen(_id)}>
-            Launch demo modal
+            Book Now
           </Button>
         </Card.Body>
         <Card.Footer>

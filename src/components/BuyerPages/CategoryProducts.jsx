@@ -8,9 +8,11 @@ import { useQuery } from "@tanstack/react-query";
 import { userContext } from "../../Contexts/AuthContext";
 import { useContext } from "react";
 
-import { Row, Container, Modal, Button, Form } from "react-bootstrap";
+import { Row, Container } from "react-bootstrap";
 import Loader from "../Shared/Loader";
+
 import ProductCard from "../Shared/ProductCard";
+import BookingModal from "./BookingModal";
 
 export default function CategoryProducts() {
   const { categoryId } = useParams();
@@ -40,7 +42,6 @@ export default function CategoryProducts() {
     const activeProduct = categoryProducts.products.find(
       (itm) => itm._id === product_id
     );
-    console.log(activeProduct);
     setActiveProduct(activeProduct);
     setIsOpenBookingModal(true);
   };
@@ -51,91 +52,16 @@ export default function CategoryProducts() {
     return <Loader />;
   }
 
-  const BookingModal = () => {
-    return (
-      <>
-        <Modal show={isOpenBookingModal} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Book: {activeProduct?.productName}</Modal.Title>
-          </Modal.Header>
-          <Form onSubmit={handleSubmit}>
-            <Modal.Body>
-              <Form.Group className="mb-3" controlId="your-name">
-                <Form.Label>Your Name</Form.Label>
-                <Form.Control
-                  disabled
-                  type="text"
-                  placeholder="Your Name"
-                  value={activeUser?.displayName}
-                />
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="your-email">
-                <Form.Label>Your Email</Form.Label>
-                <Form.Control
-                  disabled
-                  type="email"
-                  placeholder="Your Email"
-                  value={activeUser?.email}
-                />
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="booking-product">
-                <Form.Label>Booking Product</Form.Label>
-                <Form.Control
-                  disabled
-                  type="text"
-                  placeholder="Booking Product"
-                  value={activeProduct?.productName}
-                />
-              </Form.Group>
-              <div className="d-flex">
-                <Form.Group className="mb-3" controlId="original-price">
-                  <Form.Label>Original Price</Form.Label>
-                  <Form.Control
-                    disabled
-                    type="number"
-                    placeholder="Original Price"
-                    value={activeProduct?.originalPrice}
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="resale-price">
-                  <Form.Label>
-                    <strong> Resale Price</strong>
-                  </Form.Label>
-                  <Form.Control
-                    disabled
-                    type="number"
-                    placeholder="Resale Price"
-                    value={activeProduct?.resalePrice}
-                  />
-                </Form.Group>
-              </div>
-              <Form.Group className="mb-3" controlId="contact-phone">
-                <Form.Label>
-                  <strong> Contact Phone no.</strong>
-                </Form.Label>
-                <Form.Control type="tel" placeholder="Contact Phone no." />
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="meeting-location">
-                <Form.Label>
-                  <strong>Meeting Location</strong>
-                </Form.Label>
-                <Form.Control type="text" placeholder="Meeting Location" />
-              </Form.Group>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                Close
-              </Button>
-              <input type="submit" value="Submit" />
-            </Modal.Footer>
-          </Form>
-        </Modal>
-      </>
-    );
+  const payload = {
+    isOpenBookingModal,
+    handleClose,
+    handleSubmit,
+    activeProduct,
+    activeUser,
   };
   return (
     <div>
-      <BookingModal />
+      <BookingModal payload={payload} />
       <h1>{categoryProducts.category.category_name}</h1>
       <Container>
         <Row xs={1} md={2} lg={3}>
