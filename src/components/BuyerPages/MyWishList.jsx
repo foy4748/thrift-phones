@@ -5,6 +5,7 @@ import { Table, Container, Button } from "react-bootstrap";
 
 import { useQuery } from "@tanstack/react-query";
 import Loader from "../Shared/Loader";
+import toast from "react-hot-toast";
 
 // Auth Related
 import { userContext } from "../../Contexts/AuthContext";
@@ -43,7 +44,27 @@ export default function MyWishList() {
   };
 
   // Remove Wish Listed Items
-  const handleRemoveWishList = (id) => console.log(id);
+  const handleRemoveWishList = async (id) => {
+    const options = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        product_id: id,
+        buyer_uid: activeUser?.uid,
+      },
+    };
+    try {
+      const res = await fetch(`${SERVER}/wishlist`, options);
+      const result = await res.json();
+      if (result.acknowledged) {
+        toast.success("Succesfully Removed from Wish List");
+        refetch();
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("FAILED to removed");
+    }
+  };
 
   if (authLoading || isFetching || status === "loading") {
     return <Loader />;
