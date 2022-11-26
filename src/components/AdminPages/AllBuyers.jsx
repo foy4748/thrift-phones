@@ -38,7 +38,7 @@ export default function AllBuyers() {
             {allBuyers?.length &&
               allBuyers.map(({ _id, displayName, email }, idx) => {
                 return (
-                  <tr>
+                  <tr key={_id}>
                     <td>{idx + 1}</td>
                     <td>{displayName}</td>
                     <td>{email}</td>

@@ -1,10 +1,13 @@
 const SERVER =
   import.meta.env.VITE_SERVER_ADDRESS || import.meta.env.VITE_DEV_SERVER;
 
+import toast from "react-hot-toast";
+
 import { createContext, useEffect, useState } from "react";
 import firebaseApp from "../firebase.config";
 import {
   getAuth,
+  deleteUser,
   signInWithEmailAndPassword,
   signInWithPopup,
   updateProfile,
@@ -96,6 +99,17 @@ export default function AuthContext({ children }) {
     }
   };
 
+  // User Delete Handler
+  const userDelete = () => {
+    deleteUser(auth.currentUser)
+      .then(() => {
+        toast.success("Deleted User from Firebase");
+      })
+      .catch((error) => {
+        toast.error("Failed to Delete User");
+      });
+  };
+
   // LogOut Handler
   const logOutHandler = () => {
     return signOut(auth);
@@ -116,6 +130,7 @@ export default function AuthContext({ children }) {
     requestToken,
     setAuthLoading,
     postUserOnMongo,
+    userDelete,
   };
   //------------------------------
   return (
