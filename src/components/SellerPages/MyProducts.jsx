@@ -152,7 +152,7 @@ export default function MyProducts() {
                         {!advertised ? (
                           <Button
                             size="sm"
-                            disabled={isLoading}
+                            disabled={isLoading || paid}
                             onClick={() => handleAdvertise(_id, advertised)}
                           >
                             Boost
@@ -160,6 +160,7 @@ export default function MyProducts() {
                         ) : (
                           <Button
                             size="sm"
+                            disabled={isLoading || paid}
                             onClick={() => handleAdvertise(_id, advertised)}
                           >
                             Advertised

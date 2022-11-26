@@ -15,10 +15,11 @@ import { useContext } from "react";
 
 import ProductCard from "../BuyerPages/ProductCard";
 import toast from "react-hot-toast";
+import useCheckRole from "../../Hooks/useCheckRole";
 
 export default function Home() {
   const [activeProduct, setActiveProduct] = useState(null);
-  const { activeUser } = useContext(userContext);
+  const { activeUser, logOutHandler } = useContext(userContext);
   const navigate = useNavigate();
 
   const advertised = 1;
@@ -39,11 +40,20 @@ export default function Home() {
   // Modal States
   const [isOpenBookingModal, setIsOpenBookingModal] = useState(false);
   const handleClose = () => setIsOpenBookingModal(false);
+  const [userRole] = useCheckRole(activeUser?.uid, "buyer");
 
   const handleOpen = (product_id) => {
     if (!activeUser || !activeUser?.uid) {
-      toast.error("Please, Login First");
-      navigate("/login", { replace: true });
+      toast.error("Please, Login using Buyer account First");
+    }
+
+    if (!userRole) {
+      logOutHandler()
+        .then(() => {
+          toast.error(`Please, Login using BUYER account`);
+          navigate("/login", { replace: true });
+        })
+        .catch((error) => console.error(error));
     }
 
     const activeProduct = advertisedProducts.find(

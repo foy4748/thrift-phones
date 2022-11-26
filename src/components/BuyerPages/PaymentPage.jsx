@@ -9,7 +9,7 @@ const STRIPE_PK = import.meta.env.VITE_STRIPE_PK;
 
 import { useState, useEffect, useContext } from "react";
 import { loadStripe } from "@stripe/stripe-js";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 import { userContext } from "../../Contexts/AuthContext";
@@ -38,6 +38,7 @@ const CheckoutForm = ({
   const elements = useElements();
   const [clientSecret, setClientSecret] = useState(null);
   const [processing, setProcessing] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const options = {
@@ -110,6 +111,7 @@ const CheckoutForm = ({
         if (result.updateResponse.acknowledged) {
           toast.success("Successfully Paid!");
           refetch();
+          navigate("/my-orders");
         }
       } catch (error) {
         console.error(error);
