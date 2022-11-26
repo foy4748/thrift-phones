@@ -66,7 +66,7 @@ export default function Home() {
   // Handle add to Wishlist
   const handleAddtoWishList = async (
     product_id,
-    seller_id,
+    seller_uid,
     uid = activeUser?.uid
   ) => {
     if (!activeUser || !activeUser?.uid) {
@@ -74,12 +74,21 @@ export default function Home() {
       navigate("/login", { replace: true });
       return;
     }
+
+    if (!userRole) {
+      logOutHandler()
+        .then(() => {
+          toast.error(`Please, Login using BUYER account`);
+          navigate("/login", { replace: true });
+        })
+        .catch((error) => console.error(error));
+    }
     const options = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ product_id, seller_id, buyer_uid: uid }),
+      body: JSON.stringify({ product_id, seller_uid, buyer_uid: uid }),
     };
     try {
       const res = await fetch(`${SERVER}/wishlist`, options);

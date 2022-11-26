@@ -40,14 +40,17 @@ export default function MyProducts() {
 
   // Handle Deletion
   const handleDeletion = async (product_id) => {
-    const options = {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        product_id,
-      },
-    };
     try {
+      console.log("HIT");
+      const authtoken = window.localStorage.getItem("authtoken");
+      const options = {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          product_id,
+          authtoken,
+        },
+      };
       const res = await fetch(`${SERVER}/delete-products`, options);
       const result = await res.json();
       if (result.acknowledged) {

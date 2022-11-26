@@ -55,7 +55,7 @@ export default function CategoryProducts() {
   // Handle add to Wishlist
   const handleAddtoWishList = async (
     product_id,
-    seller_id,
+    seller_uid,
     uid = activeUser?.uid
   ) => {
     const options = {
@@ -63,7 +63,7 @@ export default function CategoryProducts() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ product_id, seller_id, buyer_uid: uid }),
+      body: JSON.stringify({ product_id, seller_uid, buyer_uid: uid }),
     };
     try {
       const res = await fetch(`${SERVER}/wishlist`, options);

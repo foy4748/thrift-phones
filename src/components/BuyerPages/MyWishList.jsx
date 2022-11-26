@@ -47,12 +47,13 @@ export default function MyWishList() {
 
   // Remove Wish Listed Items
   const handleRemoveWishList = async (id) => {
+    const authtoken = window.localStorage.getItem("authtoken");
     const options = {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         product_id: id,
-        buyer_uid: activeUser?.uid,
+        authtoken,
       },
     };
     try {
