@@ -65,11 +65,13 @@ export default function MyProducts() {
   // Handle Advertise
   const handleAdvertise = async (product_id, advertised) => {
     setIsLoading(true);
+    const authtoken = window.localStorage.getItem("authtoken");
     const options = {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         product_id,
+        authtoken,
       },
       body: JSON.stringify({ advertised: !advertised }),
     };

@@ -33,10 +33,13 @@ export default function AddAProduct() {
     data["postedTime"] = new Date();
     data["seller_uid"] = activeUser?.uid;
     data["sellerName"] = activeUser?.displayName;
+
+    const authtoken = window.localStorage.getItem("authtoken");
     const options = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        authtoken,
       },
       body: JSON.stringify(data),
     };

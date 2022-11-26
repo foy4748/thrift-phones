@@ -1,5 +1,6 @@
 import { Modal, Button, Form } from "react-bootstrap";
 import Loader from "../Shared/Loader";
+import { useState } from "react";
 
 const SERVER =
   import.meta.env.VITE_SERVER_ADDRESS || import.meta.env.VITE_DEV_SERVER;
@@ -7,6 +8,7 @@ const SERVER =
 import toast from "react-hot-toast";
 
 export default function BookingModal({ payload }) {
+  const [isPosting, setIsPosting] = useState(false);
   const {
     isOpenBookingModal,
     handleClose,
@@ -15,15 +17,9 @@ export default function BookingModal({ payload }) {
     refetch,
   } = payload;
 
-  if (!activeUser || !activeProduct) {
-    return (
-      <Modal show={isOpenBookingModal} onHide={handleClose}>
-        <Loader />
-      </Modal>
-    );
-  }
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsPosting(true);
     const form = e.target;
 
     // FAILED to use React-Form-Hook for some issues
@@ -55,10 +51,12 @@ export default function BookingModal({ payload }) {
       contactPhoneNo,
     };
 
+    const authtoken = window.localStorage.getItem("authtoken");
     const options = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        authtoken,
       },
       body: JSON.stringify(payload),
     };
@@ -68,19 +66,29 @@ export default function BookingModal({ payload }) {
       const result = await res.json();
       if (result.acknowledged) {
         toast.success(`Successfully Booked ${productName}`);
+        setIsPosting(false);
         handleClose();
         refetch();
       } else {
         toast.error("FAILED to book product");
+        setIsPosting(false);
         refetch();
       }
     } catch (error) {
       console.error(error);
+      setIsPosting(false);
       toast.error("FAILED to book product");
       refetch();
     }
   };
 
+  if (!activeUser || !activeProduct || isPosting) {
+    return (
+      <Modal show={isOpenBookingModal} onHide={handleClose}>
+        <Loader />
+      </Modal>
+    );
+  }
   return (
     <>
       <Modal show={isOpenBookingModal} onHide={handleClose}>

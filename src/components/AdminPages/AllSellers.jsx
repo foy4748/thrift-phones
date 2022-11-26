@@ -27,14 +27,15 @@ export default function AllSellers() {
   const makeVerified = async (id, uid, verified, displayName) => {
     const url = `${SERVER}/users`;
     try {
+      const authtoken = window.localStorage.getItem("authtoken");
       const options = {
         headers: {
           "Content-Type": "application/json",
+          authtoken,
           user_id: id,
           user_uid: uid,
         },
       };
-
       const patch = { verified: !verified };
       const { data } = await axios.patch(url, patch, options);
       if (data.acknowledged) {
