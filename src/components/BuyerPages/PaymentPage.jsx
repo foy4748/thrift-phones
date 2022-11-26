@@ -28,8 +28,9 @@ import "./stripe.css";
 
 const CheckoutForm = ({
   price,
-  buyer_name,
+  buyerName,
   buyer_email,
+  buyer_uid,
   product_id,
   paid,
   refetch,
@@ -83,7 +84,7 @@ const CheckoutForm = ({
         payment_method: {
           card,
           billing_details: {
-            name: buyer_name,
+            name: buyerName,
             email: buyer_email,
           },
         },
@@ -97,7 +98,8 @@ const CheckoutForm = ({
     if (paymentIntent?.status === "succeeded") {
       paymentIntent["product_id"] = product_id;
       paymentIntent["buyer_email"] = buyer_email;
-      paymentIntent["buyer_email"] = buyer_name;
+      paymentIntent["buyerName"] = buyerName;
+      paymentIntent["buyer_uid"] = buyer_uid;
       const options = {
         method: "POST",
         headers: {
@@ -109,12 +111,14 @@ const CheckoutForm = ({
         const res = await fetch(`${SERVER}/payment`, options);
         const result = await res.json();
         if (result.updateResponse.acknowledged) {
+          setProcessing(false);
           toast.success("Successfully Paid!");
           refetch();
           navigate("/my-orders");
         }
       } catch (error) {
         console.error(error);
+        setProcessing(false);
         toast.error("Payment Failed");
       }
     }
@@ -203,8 +207,9 @@ export default function PaymentPage() {
           <CheckoutForm
             price={product?.resalePrice || 1}
             product_id={product_id}
-            buyer_name={activeUser.displayName}
+            buyerName={activeUser.displayName}
             buyer_email={activeUser.email}
+            buyer_uid={activeUser.uid}
             paid={product?.paid}
             refetch={refetch}
           />
