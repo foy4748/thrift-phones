@@ -24,8 +24,15 @@ export default function MyProducts() {
   } = useQuery({
     queryKey: [seller_uid],
     queryFn: async () => {
-      const url = `${SERVER}/products?seller_uid=${seller_uid}`;
-      const res = await fetch(url);
+      const authtoken = window.localStorage.getItem("authtoken");
+      const options = {
+        headers: {
+          "Content-Type": "application/json",
+          authtoken,
+        },
+      };
+      const url = `${SERVER}/my-products`;
+      const res = await fetch(url, options);
       const data = await res.json();
       return data;
     },
@@ -93,7 +100,7 @@ export default function MyProducts() {
   return (
     <div>
       <h1>My Products</h1>
-      <Container>
+      <Container className="mt-5">
         <Table striped bordered hover>
           <thead>
             <tr>
@@ -152,7 +159,7 @@ export default function MyProducts() {
                         {!advertised ? (
                           <Button
                             size="sm"
-                            disabled={isLoading || paid}
+                            disabled={isLoading}
                             onClick={() => handleAdvertise(_id, advertised)}
                           >
                             Boost
