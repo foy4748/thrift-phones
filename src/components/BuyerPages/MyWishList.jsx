@@ -106,10 +106,7 @@ export default function MyWishList() {
           <tbody>
             {myWishListProducts?.length &&
               myWishListProducts.map(
-                (
-                  { _id, photoURL, productName, resalePrice, booked, paid },
-                  idx
-                ) => {
+                ({ _id, photoURL, productName, resalePrice, paid }, idx) => {
                   return (
                     <tr key={_id}>
                       <td>{idx + 1}</td>
@@ -134,11 +131,7 @@ export default function MyWishList() {
                         </Button>
                       </td>
                       <td>
-                        <Button
-                          size="sm"
-                          disabled={booked}
-                          onClick={() => handleOpen(_id)}
-                        >
+                        <Button size="sm" onClick={() => handleOpen(_id)}>
                           Book
                         </Button>
                       </td>

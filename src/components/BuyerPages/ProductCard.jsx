@@ -27,7 +27,6 @@ export default function ProductCard({
     sellerName,
     originalPrice,
     resalePrice,
-    booked,
     verified,
     seller_uid,
   } = product;
@@ -88,11 +87,7 @@ export default function ProductCard({
             <Button onClick={() => handleAddtoWishList(_id, seller_uid)}>
               Add to wish list
             </Button>
-            <Button
-              variant="primary"
-              disabled={booked}
-              onClick={() => handleOpen(_id)}
-            >
+            <Button variant="primary" onClick={() => handleOpen(_id)}>
               Book Now
             </Button>
           </div>
