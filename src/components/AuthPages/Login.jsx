@@ -23,7 +23,7 @@ export default function Login() {
     loginHandler,
     googleLoginHandler,
     githubLoginHandler,
-    requestToken,
+    checkUserOnMongo,
   } = useContext(userContext);
 
   const [error, setError] = useState();
@@ -48,7 +48,10 @@ export default function Login() {
 
     loginHandler(email, password)
       .then(async ({ user }) => {
-        await requestToken(user.uid);
+        const userStatus = await checkUserOnMongo(user.uid);
+        if (!userStatus) {
+          return;
+        }
         setActiveUser(user);
         form.reset();
         toast.success("Successfully Logged In");
@@ -68,7 +71,10 @@ export default function Login() {
   const handlerGoogleLogin = () => {
     googleLoginHandler()
       .then(async ({ user }) => {
-        await requestToken(user.uid);
+        const userStatus = await checkUserOnMongo(user.uid);
+        if (!userStatus) {
+          return;
+        }
         setActiveUser(user);
         toast.success("Successfully Logged In");
         navigate(location?.state?.from || location?.state?.prev || "/", {
@@ -86,7 +92,10 @@ export default function Login() {
   const handlerGithubLogin = () => {
     githubLoginHandler()
       .then(async ({ user }) => {
-        await requestToken(user.uid);
+        const userStatus = await checkUserOnMongo(user.uid);
+        if (!userStatus) {
+          return;
+        }
         setActiveUser(user);
         toast.success("Successfully Logged In");
         navigate(location?.state?.from || location?.state?.prev || "/", {

@@ -54,6 +54,21 @@ export default function AllSellers() {
     }
   };
 
+  // Delete a Seller
+  const handleDeleteSeller = async (seller_uid) => {
+    const url = `${SERVER}/delete-seller`;
+    const authtoken = window.localStorage.getItem("authtoken");
+    const options = {
+      headers: {
+        "Content-Type": "application/json",
+        authtoken,
+        seller_uid,
+      },
+    };
+    const { data } = await axios.delete(url, options);
+    console.log(data);
+  };
+
   if (status === "loading") {
     return <Loader />;
   }
@@ -81,7 +96,12 @@ export default function AllSellers() {
                       <td>{displayName}</td>
                       <td>{email}</td>
                       <td>
-                        <Button variant="danger" size="sm" className="m-0">
+                        <Button
+                          variant="danger"
+                          size="sm"
+                          className="m-0"
+                          onClick={() => handleDeleteSeller(uid)}
+                        >
                           Delete
                         </Button>
                       </td>

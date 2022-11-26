@@ -7,7 +7,6 @@ import { createContext, useEffect, useState } from "react";
 import firebaseApp from "../firebase.config";
 import {
   getAuth,
-  deleteUser,
   signInWithEmailAndPassword,
   signInWithPopup,
   updateProfile,
@@ -99,15 +98,17 @@ export default function AuthContext({ children }) {
     }
   };
 
-  // User Delete Handler
-  const userDelete = () => {
-    deleteUser(auth.currentUser)
-      .then(() => {
-        toast.success("Deleted User from Firebase");
-      })
-      .catch((error) => {
-        toast.error("Failed to Delete User");
-      });
+  // Checking user whether deleted or not
+  const checkUserOnMongo = async (uid) => {
+    const res = await fetch(`${SERVER}/users/${uid}`);
+    const result = res.json();
+    if (result.error) {
+      toast.error("USER is DELETED by an ADMIN");
+      return false;
+    } else {
+      await requestToken(uid);
+      return true;
+    }
   };
 
   // LogOut Handler
@@ -130,7 +131,7 @@ export default function AuthContext({ children }) {
     requestToken,
     setAuthLoading,
     postUserOnMongo,
-    userDelete,
+    checkUserOnMongo,
   };
   //------------------------------
   return (

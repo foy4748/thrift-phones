@@ -27,6 +27,7 @@ import {
 import "./stripe.css";
 
 const CheckoutForm = ({
+  productPurchased,
   price,
   buyerName,
   buyer_email,
@@ -96,10 +97,13 @@ const CheckoutForm = ({
 
     console.log(paymentIntent);
     if (paymentIntent?.status === "succeeded") {
+      // Adding More additional Info for payment record
       paymentIntent["product_id"] = product_id;
       paymentIntent["buyer_email"] = buyer_email;
       paymentIntent["buyerName"] = buyerName;
       paymentIntent["buyer_uid"] = buyer_uid;
+      paymentIntent["productPurchased"] = productPurchased;
+
       const options = {
         method: "POST",
         headers: {
@@ -206,6 +210,7 @@ export default function PaymentPage() {
         <Elements stripe={stripePromise}>
           <CheckoutForm
             price={product?.resalePrice || 1}
+            productPurchased={product}
             product_id={product_id}
             buyerName={activeUser.displayName}
             buyer_email={activeUser.email}
