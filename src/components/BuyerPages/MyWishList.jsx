@@ -26,10 +26,16 @@ export default function MyWishList() {
   } = useQuery({
     queryKey: [buyer_uid],
     queryFn: async () => {
-      const url = `${SERVER}/wishlist?buyer_uid=${buyer_uid}`;
-      const res = await fetch(url);
+      const authtoken = window.localStorage.getItem("authtoken");
+      const options = {
+        headers: {
+          "Content-Type": "application/json",
+          authtoken,
+        },
+      };
+      const url = `${SERVER}/wishlist`;
+      const res = await fetch(url, options);
       const data = await res.json();
-      console.log(data);
       return data;
     },
   });

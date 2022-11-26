@@ -53,17 +53,15 @@ export default function CategoryProducts() {
   };
 
   // Handle add to Wishlist
-  const handleAddtoWishList = async (
-    product_id,
-    seller_uid,
-    uid = activeUser?.uid
-  ) => {
+  const handleAddtoWishList = async (product_id, seller_uid) => {
+    const authtoken = window.localStorage.getItem("authtoken");
     const options = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        authtoken,
       },
-      body: JSON.stringify({ product_id, seller_uid, buyer_uid: uid }),
+      body: JSON.stringify({ product_id, seller_uid }),
     };
     try {
       const res = await fetch(`${SERVER}/wishlist`, options);
