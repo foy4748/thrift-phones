@@ -103,7 +103,7 @@ export default function MyProducts() {
               <th>Resale Price</th>
               <th>Delete</th>
               <th>Booked</th>
-              <th>Paid</th>
+              <th>Sold</th>
               <th>Advertise</th>
             </tr>
           </thead>

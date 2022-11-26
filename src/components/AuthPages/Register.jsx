@@ -218,10 +218,3 @@ export default function Register() {
     </div>
   );
 }
-
-/*
-        <button onClick={handlerGithubLogin} className="border btnPrimary">
-          {" "}
-          <FontAwesomeIcon icon={faGithub} /> Github{" "}
-        </button>
- */

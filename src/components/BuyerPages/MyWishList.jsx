@@ -6,6 +6,7 @@ import { Table, Container, Button } from "react-bootstrap";
 import { useQuery } from "@tanstack/react-query";
 import Loader from "../Shared/Loader";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 // Auth Related
 import { userContext } from "../../Contexts/AuthContext";
@@ -28,6 +29,7 @@ export default function MyWishList() {
       const url = `${SERVER}/wishlist?buyer_uid=${buyer_uid}`;
       const res = await fetch(url);
       const data = await res.json();
+      console.log(data);
       return data;
     },
   });
@@ -136,9 +138,15 @@ export default function MyWishList() {
                         </Button>
                       </td>
                       <td>
-                        <Button size="sm" disabled={paid}>
-                          {paid ? "Paid" : "Pay"}
-                        </Button>
+                        {!paid ? (
+                          <Link to={`/payment/${_id}`}>
+                            <Button size="sm">Pay</Button>
+                          </Link>
+                        ) : (
+                          <Button disabled size="sm">
+                            Paid
+                          </Button>
+                        )}
                       </td>
                     </tr>
                   );

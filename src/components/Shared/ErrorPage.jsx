@@ -12,7 +12,7 @@ export default function ErrorPage() {
         </p>
         <div className="d-flex justify-content-center">
           <img
-            className="img img-fluid w-50"
+            className={styles.errorPageImg}
             src="/errorPageImg.jpg"
             alt="404 Error Page Cover Image"
           />

@@ -52,13 +52,7 @@ export default function MyOrders() {
             {myOrders?.length !== 0 &&
               myOrders.map(
                 (
-                  {
-                    product_id,
-                    photoURL,
-                    productName,
-                    resalePrice,
-                    paymentStatus,
-                  },
+                  { product_id, photoURL, productName, resalePrice, paid },
                   idx
                 ) => {
                   return (
@@ -76,8 +70,8 @@ export default function MyOrders() {
                       <td>{productName}</td>
                       <td>{resalePrice}</td>
                       <td>
-                        {!paymentStatus ? (
-                          <Link to={`/my-orders/${product_id}`}>
+                        {!paid ? (
+                          <Link to={`/payment/${product_id}`}>
                             <Button size="sm">Pay</Button>
                           </Link>
                         ) : (

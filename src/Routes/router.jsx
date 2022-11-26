@@ -20,6 +20,7 @@ import Register from "../components/AuthPages/Register";
 import CategoryProducts from "../components/BuyerPages/CategoryProducts";
 import MyOrders from "../components/BuyerPages/MyOrders";
 import MyWishList from "../components/BuyerPages/MyWishList";
+import PaymentPage from "../components/BuyerPages/PaymentPage";
 
 // Seller Pages
 import AddAProduct from "../components/SellerPages/AddAProduct";
@@ -75,6 +76,16 @@ const routerObj = [
           <PrivateRoute>
             <RoleProtectedRoute role="buyer">
               <MyWishList />
+            </RoleProtectedRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/payment/:product_id",
+        element: (
+          <PrivateRoute>
+            <RoleProtectedRoute role="buyer">
+              <PaymentPage />
             </RoleProtectedRoute>
           </PrivateRoute>
         ),
