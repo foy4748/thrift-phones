@@ -34,7 +34,7 @@ export default function ProductCard({
   return (
     <Col key={_id}>
       {" "}
-      <Card>
+      <Card className="m-1">
         <Card.Img
           variant="top"
           src={photoURL}
@@ -83,11 +83,18 @@ export default function ProductCard({
             <strong>Description</strong>
           </Card.Text>
           <Card.Text>{description}</Card.Text>
-          <div className="d-flex justify-content-between">
-            <Button onClick={() => handleAddtoWishList(_id, seller_uid)}>
+          <div className="d-flex flex-wrap justify-content-between">
+            <Button
+              className="mt-1"
+              onClick={() => handleAddtoWishList(_id, seller_uid)}
+            >
               Add to wish list
             </Button>
-            <Button variant="primary" onClick={() => handleOpen(_id)}>
+            <Button
+              className="mt-1"
+              variant="primary"
+              onClick={() => handleOpen(_id)}
+            >
               Book Now
             </Button>
           </div>

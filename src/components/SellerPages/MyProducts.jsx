@@ -40,6 +40,7 @@ export default function MyProducts() {
 
   // Handle Deletion
   const handleDeletion = async (product_id) => {
+    setIsLoading(true);
     try {
       console.log("HIT");
       const authtoken = window.localStorage.getItem("authtoken");
@@ -55,9 +56,12 @@ export default function MyProducts() {
       const result = await res.json();
       if (result.acknowledged) {
         toast.success("Successfully deleted");
+        setIsLoading(false);
+        refetch();
       }
     } catch (error) {
       console.error(error);
+      setIsLoading(false);
       toast.error("FAILED to delete product");
     }
   };
@@ -94,7 +98,7 @@ export default function MyProducts() {
     }
   };
 
-  if (status === "loading") {
+  if (status === "loading" || isLoading) {
     return <Loader />;
   }
 

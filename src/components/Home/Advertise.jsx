@@ -120,14 +120,18 @@ export default function Advertise() {
     refetch,
   };
 
+  if (!advertisedProducts?.length) {
+    return null;
+  }
+
   return (
-    <div>
+    <div className="my-5">
       <BookingModal payload={payload} />
       {advertisedProducts?.length && (
         <>
           <h1>Advertised Products</h1>
           <Container>
-            <Row sm={1} lg={3}>
+            <Row md={1} lg={3}>
               {advertisedProducts.length &&
                 advertisedProducts.map((product) => {
                   return (

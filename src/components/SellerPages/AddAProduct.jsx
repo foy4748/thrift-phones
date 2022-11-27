@@ -1,5 +1,6 @@
 const SERVER =
   import.meta.env.VITE_SERVER_ADDRESS || import.meta.env.VITE_DEV_SERVER;
+const IMG_BB_KEY = import.meta.env.VITE_IMG_BB_KEY;
 
 import { Form, Container } from "react-bootstrap";
 import useGetCategories from "../../Hooks/useGetCategories";
@@ -7,10 +8,11 @@ import { useForm } from "react-hook-form";
 
 // Auth Related
 import { userContext } from "../../Contexts/AuthContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Loader from "../Shared/Loader";
+import useCheckVerifiedSeller from "../../Hooks/useCheckVerifiedSeller";
 
 import toast from "react-hot-toast";
 
@@ -28,11 +30,46 @@ export default function AddAProduct() {
 
   const [categories, categoriesLoading] = useGetCategories();
   const { activeUser, authLoading } = useContext(userContext);
+  const [isUploading, setIsUploading] = useState(false);
+  const [isVefifiedSeller] = useCheckVerifiedSeller(activeUser?.uid);
 
   const formSubmission = async (data) => {
+    toast.success("Uploading a product...");
+    setIsUploading(true);
+    // Uploading Photo to IMG BB ------------
+    const photoFile = new FormData();
+    const file = data["photoFile"][0];
+    photoFile.append("image", file);
+
+    const photoUpUrl = `https://api.imgbb.com/1/upload?key=${IMG_BB_KEY}`;
+    const photoUpOptions = {
+      method: "POST",
+      body: photoFile,
+    };
+
+    let photoUpResult;
+    try {
+      const photoUpResponse = await fetch(photoUpUrl, photoUpOptions);
+      photoUpResult = await photoUpResponse.json();
+      if (!photoUpResult.success) {
+        toast.error("Couldn't Upload Product Photo");
+        setIsUploading(false);
+        return;
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Couldn't Upload Product Photo");
+      setIsUploading(false);
+    }
+
+    //------ ---------- ----------- ----------
+
+    data["photoURL"] = photoUpResult.data.url;
+    console.log(data["photoURL"]);
     data["postedTime"] = new Date();
     data["seller_uid"] = activeUser?.uid;
     data["sellerName"] = activeUser?.displayName;
+    data["verified"] = isVefifiedSeller;
 
     const authtoken = window.localStorage.getItem("authtoken");
     const options = {
@@ -49,14 +86,17 @@ export default function AddAProduct() {
       const result = await res.json();
       if (result.acknowledged) {
         toast.success("Successfully POSTed product");
+        setIsUploading(false);
         reset();
         navigate("/my-products");
       } else {
         toast.error("FAILED to post product");
+        setIsUploading(false);
       }
     } catch (error) {
       console.error(error);
       toast.error("FAILED to post product");
+      setIsUploading(false);
     }
   };
   if (authLoading || categoriesLoading) {
@@ -148,18 +188,23 @@ export default function AddAProduct() {
               />
             </Form.Group>
           </div>
-          <Form.Group className="mb-3" controlId="photo-url">
-            <Form.Label>Photo URL</Form.Label>
+          <Form.Group controlId="formFile" className="mb-3">
+            <Form.Label>Select Picture file of the Product</Form.Label>
             <Form.Control
-              type="text"
-              placeholder="Photo URL"
-              rows={3}
-              {...register("photoURL")}
+              required
+              name="photoFile"
+              {...register("photoFile", { required: true })}
+              type="file"
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="product-description">
             <Form.Label>Description</Form.Label>
-            <Form.Control as="textarea" rows={3} {...register("description")} />
+            <Form.Control
+              as="textarea"
+              rows={3}
+              {...register("description")}
+              maxLength="200"
+            />
           </Form.Group>
           <div className="d-flex justify-content-center">
             <input className="btn btn-primary" type="submit" value="Submit" />

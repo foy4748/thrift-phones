@@ -204,7 +204,7 @@ export default function NavBar({ darkActive, setDarkActive }) {
 
   return (
     <>
-      <Navbar fixed="top" collapseOnSelect expand="lg" bg="dark" variant="dark">
+      <Navbar fixed="top" collapseOnSelect expand="lg" bg="white">
         <Container>
           <Navbar.Brand as={Link} to="/">
             <img
