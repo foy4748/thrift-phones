@@ -7,6 +7,7 @@ import { faGoogle, faGithub } from "@fortawesome/free-brands-svg-icons";
 import styles from "./Register.module.css";
 
 const AppName = import.meta.env.VITE_AppName;
+const IMG_BB_KEY = import.meta.env.VITE_IMG_BB_KEY;
 
 import Loader from "../Shared/Loader";
 import toast from "react-hot-toast";
@@ -26,6 +27,7 @@ export default function Register() {
   } = useContext(userContext);
   const [error, setError] = useState();
   const [loading, setLoading] = useState(true);
+  const [isUploading, setIsUploading] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -47,18 +49,45 @@ export default function Register() {
     const password = form.password.value;
 
     const displayName = form.displayName.value;
-    const photoURL = form.photoURL.value;
-
-    const profileObj = { displayName, photoURL };
 
     let role = form.role.value;
 
     registerHandler(email, password)
       .then(async ({ user }) => {
-        await requestToken(user.uid);
+        // Uploading Photo to IMG BB ------------
+        const photoFile = new FormData();
+
+        const file = form.photoFile.files[0];
+        photoFile.append("image", file);
+
+        const photoUpUrl = `https://api.imgbb.com/1/upload?key=${IMG_BB_KEY}`;
+        const photoUpOptions = {
+          method: "POST",
+          body: photoFile,
+        };
+
+        let photoUpResult;
+        try {
+          const photoUpResponse = await fetch(photoUpUrl, photoUpOptions);
+          photoUpResult = await photoUpResponse.json();
+          if (!photoUpResult.success) {
+            toast.error("Couldn't Upload Product Photo");
+            setIsUploading(false);
+            return;
+          }
+        } catch (error) {
+          console.error(error);
+          toast.error("Couldn't Upload Product Photo");
+          setIsUploading(false);
+        }
+        const photoURL = photoUpResult.data.url;
+        //------------------
         await postUserOnMongo(user, role, displayName, photoURL);
+        await requestToken(user.uid);
         setActiveUser(user);
         toast.success("Successfully Registered New Account");
+
+        const profileObj = { displayName, photoURL };
         if (displayName && photoURL) {
           setLoading(true);
           handleUpdate(profileObj);
@@ -135,7 +164,7 @@ export default function Register() {
   };
   //--------------------------------------------
 
-  if (authLoading || loading) {
+  if (authLoading || loading || isUploading) {
     return <Loader />;
   }
 
@@ -181,14 +210,9 @@ export default function Register() {
             <option value="seller">Seller</option>
           </Form.Select>
         </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicPhotoURL">
-          <Form.Label>Photo URL</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Photo URL"
-            name="photoURL"
-            required
-          />
+        <Form.Group controlId="formFile" className="mb-3">
+          <Form.Label>Select Profile Picture</Form.Label>
+          <Form.Control type="file" name="photoFile" required />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicCheckbox">
           <p>
