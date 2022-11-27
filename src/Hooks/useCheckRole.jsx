@@ -12,7 +12,7 @@ export default function useCheckRole(uid, role) {
       fetch(`${SERVER}/users/${uid}`)
         .then((res) => res.json())
         .then((data) => {
-          if (data.role.includes(role)) {
+          if (data?.role?.includes(role)) {
             setUserRole(true);
             setUserRoleLoading(false);
           } else {

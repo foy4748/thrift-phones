@@ -2,6 +2,7 @@ const SERVER =
   import.meta.env.VITE_SERVER_ADDRESS || import.meta.env.VITE_DEV_SERVER;
 
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 import { createContext, useEffect, useState } from "react";
 import firebaseApp from "../firebase.config";
@@ -28,6 +29,7 @@ export { userContext };
 export default function AuthContext({ children }) {
   const [activeUser, setActiveUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
+  const navigate = useNavigate();
   //------------------------------
   useEffect(() => {
     const persist = onAuthStateChanged(auth, (user) => {
@@ -98,22 +100,30 @@ export default function AuthContext({ children }) {
     }
   };
 
-  // Checking user whether deleted or not
+  // LogOut Handler
+  const logOutHandler = () => {
+    return signOut(auth);
+  };
+
+  // checking user whether deleted or not
   const checkUserOnMongo = async (uid) => {
     const res = await fetch(`${SERVER}/users/${uid}`);
     const result = res.json();
-    if (result.error) {
-      toast.error("USER is DELETED by an ADMIN");
+    if (res.status == 404) {
+      toast.error("USER was DELETED by an ADMIN");
+      logOutHandler()
+        .then(() => {
+          navigate("/");
+        })
+        .catch((error) => {
+          console.error(error);
+          toast.error("FAILED TO LOGOUT");
+        });
       return false;
     } else {
       await requestToken(uid);
       return true;
     }
-  };
-
-  // LogOut Handler
-  const logOutHandler = () => {
-    return signOut(auth);
   };
   //------------------------------
 

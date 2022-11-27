@@ -50,6 +50,7 @@ export default function Login() {
       .then(async ({ user }) => {
         const userStatus = await checkUserOnMongo(user.uid);
         if (!userStatus) {
+          setActiveUser(null);
           return;
         }
         setActiveUser(user);

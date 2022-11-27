@@ -4,11 +4,13 @@ const SERVER =
 import Loader from "../Shared/Loader";
 import { Table, Container, Button } from "react-bootstrap";
 import toast from "react-hot-toast";
+import { useState } from "react";
 
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
 export default function AllSellers() {
+  const [isDeleting, setIsDeleting] = useState(false);
   let role = "seller";
   const {
     data: allSellers,
@@ -56,6 +58,8 @@ export default function AllSellers() {
 
   // Delete a Seller
   const handleDeleteSeller = async (seller_uid) => {
+    toast.success("DELETING a BUYER...");
+    setIsDeleting(true);
     const url = `${SERVER}/delete-seller`;
     const authtoken = window.localStorage.getItem("authtoken");
     const options = {
@@ -65,12 +69,33 @@ export default function AllSellers() {
         seller_uid,
       },
     };
-    const { data } = await axios.delete(url, options);
-    console.log(data);
+    try {
+      const { data } = await axios.delete(url, options);
+
+      if (data.acknowledged) {
+        toast.success("SUCCESFULLY DELETED A SELLER");
+        setIsDeleting(false);
+        refetch();
+      } else {
+        toast.error("FAILED to delete a seller");
+        setIsDeleting(false);
+      }
+    } catch (error) {
+      toast.error("FAILED to delete a seller");
+      console.error(error);
+      setIsDeleting(false);
+    }
   };
 
-  if (status === "loading") {
+  if (status === "loading" || isDeleting) {
     return <Loader />;
+  }
+  if (!allSellers?.length) {
+    return (
+      <div>
+        <h1>No Sellers online</h1>
+      </div>
+    );
   }
   return (
     <div>

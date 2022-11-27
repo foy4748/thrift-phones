@@ -5,12 +5,19 @@ import Loader from "../Shared/Loader";
 import { Button, Table, Container } from "react-bootstrap";
 
 import axios from "axios";
+import toast from "react-hot-toast";
 
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+
 export default function AllBuyers() {
   let role = "buyer";
-
-  const { data: allBuyers, status } = useQuery({
+  const [isDeleting, setIsDeleting] = useState(false);
+  const {
+    data: allBuyers,
+    status,
+    refetch,
+  } = useQuery({
     queryKey: [role],
     queryFn: async () => {
       const url = `${SERVER}/users?role=${role}`;
@@ -18,11 +25,13 @@ export default function AllBuyers() {
       return data;
     },
   });
-  if (status === "loading") {
+  if (status === "loading" || isDeleting) {
     return <Loader />;
   }
 
   const handleDeleteBuyer = async (buyer_uid) => {
+    toast.success("DELETING a BUYER...");
+    setIsDeleting(true);
     const url = `${SERVER}/delete-buyer`;
     const authtoken = window.localStorage.getItem("authtoken");
     const options = {
@@ -32,9 +41,30 @@ export default function AllBuyers() {
         buyer_uid,
       },
     };
-    const { data } = await axios.delete(url, options);
-    console.log(data);
+    try {
+      const { data } = await axios.delete(url, options);
+
+      if (data.acknowledged) {
+        toast.success("SUCCESFULLY DELETED A BUYER");
+        setIsDeleting(false);
+        refetch();
+      } else {
+        toast.error("FAILED to delete a buyer");
+        setIsDeleting(false);
+      }
+    } catch (error) {
+      toast.error("FAILED to delete a buyer");
+      console.error(error);
+      setIsDeleting(false);
+    }
   };
+  if (!allBuyers?.length) {
+    return (
+      <div>
+        <h1>No Buyers online</h1>
+      </div>
+    );
+  }
   return (
     <div>
       <h1>All Buyers</h1>
