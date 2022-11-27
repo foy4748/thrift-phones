@@ -42,7 +42,6 @@ export default function MyProducts() {
   const handleDeletion = async (product_id) => {
     setIsLoading(true);
     try {
-      console.log("HIT");
       const authtoken = window.localStorage.getItem("authtoken");
       const options = {
         method: "DELETE",
@@ -58,11 +57,12 @@ export default function MyProducts() {
         toast.success("Successfully deleted");
         setIsLoading(false);
         refetch();
+      } else {
+        setIsLoading(false);
+        toast.error("FAILED to delete product");
       }
     } catch (error) {
       console.error(error);
-      setIsLoading(false);
-      toast.error("FAILED to delete product");
     }
   };
 
@@ -88,6 +88,7 @@ export default function MyProducts() {
         refetch();
       } else {
         toast.error("FAILED to advertise product");
+        setIsLoading(false);
         refetch();
       }
       setIsLoading(false);
