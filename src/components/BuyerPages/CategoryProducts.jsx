@@ -2,7 +2,7 @@ const SERVER =
   import.meta.env.VITE_SERVER_ADDRESS || import.meta.env.VITE_DEV_SERVER;
 
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 import { userContext } from "../../Contexts/AuthContext";
@@ -12,14 +12,16 @@ import { Row, Container } from "react-bootstrap";
 import Loader from "../Shared/Loader";
 
 import toast from "react-hot-toast";
+import useCheckRole from "../../Hooks/useCheckRole";
 
 import ProductCard from "../BuyerPages/ProductCard";
 import BookingModal from "./BookingModal";
 
 export default function CategoryProducts() {
   const { categoryId } = useParams();
+  const navigate = useNavigate();
   const [activeProduct, setActiveProduct] = useState(null);
-  const { activeUser } = useContext(userContext);
+  const { activeUser, logOutHandler } = useContext(userContext);
 
   const {
     data: categoryProducts,
@@ -44,7 +46,16 @@ export default function CategoryProducts() {
   // Modal States
   const [isOpenBookingModal, setIsOpenBookingModal] = useState(false);
   const handleClose = () => setIsOpenBookingModal(false);
+  const [userRole] = useCheckRole(activeUser?.uid, "buyer");
   const handleOpen = (product_id) => {
+    if (!userRole) {
+      logOutHandler()
+        .then(() => {
+          toast.error(`Please, Login using BUYER account`);
+          navigate("/login", { replace: true });
+        })
+        .catch((error) => console.error(error));
+    }
     const activeProduct = categoryProducts.products.find(
       (itm) => itm._id === product_id
     );
@@ -54,6 +65,14 @@ export default function CategoryProducts() {
 
   // Handle add to Wishlist
   const handleAddtoWishList = async (product_id, seller_uid) => {
+    if (!userRole) {
+      logOutHandler()
+        .then(() => {
+          toast.error(`Please, Login using BUYER account`);
+          navigate("/login", { replace: true });
+        })
+        .catch((error) => console.error(error));
+    }
     const authtoken = window.localStorage.getItem("authtoken");
     const options = {
       method: "POST",
@@ -89,6 +108,14 @@ export default function CategoryProducts() {
     activeUser,
     refetch,
   };
+
+  if (!categoryProducts?.products?.length) {
+    return (
+      <div>
+        <h1>No Products Found</h1>
+      </div>
+    );
+  }
   return (
     <div>
       <BookingModal payload={payload} />

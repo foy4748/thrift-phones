@@ -162,7 +162,7 @@ export default function AddAProduct() {
               {...register("location")}
             />
           </Form.Group>
-          <div className="d-flex justify-content-between">
+          <div className="d-md-flex justify-content-between">
             <Form.Group className="mb-3" controlId="year-of-purchase">
               <Form.Label>Year of Purchase</Form.Label>
               <Form.Control
