@@ -41,6 +41,7 @@ export default function Register() {
 
   /* Register Form Submit Handler */
   const handleSubmit = (e) => {
+    setLoading(true);
     e.preventDefault();
     const form = e.target;
 
@@ -73,11 +74,13 @@ export default function Register() {
           if (!photoUpResult.success) {
             toast.error("Couldn't Upload Product Photo");
             setIsUploading(false);
+            setLoading(false);
             return;
           }
         } catch (error) {
           console.error(error);
           toast.error("Couldn't Upload Product Photo");
+          setLoading(false);
           setIsUploading(false);
         }
         const photoURL = photoUpResult.data.url;
@@ -86,44 +89,51 @@ export default function Register() {
         await requestToken(user.uid);
         setActiveUser(user);
         toast.success("Successfully Registered New Account");
+        setLoading(false);
 
         const profileObj = { displayName, photoURL };
         if (displayName && photoURL) {
           setLoading(true);
+          toast("Updating Profile");
           handleUpdate(profileObj);
+          form.reset();
         }
-        if (location?.state?.from) {
-          navigate(location?.state?.from, { replace: true });
-          return;
-        }
-        if (location?.state?.prev) {
-          navigate(location?.state?.prev, { replace: true });
-          return;
-        }
-        form.reset();
       })
       .catch((error) => {
         console.error(error);
         toast.error("FAILED to Register");
         setAuthLoading(false);
+        setLoading(false);
         setError(error);
       });
   };
   // For adding displayName and photoURL
   const handleUpdate = (profileObj) => {
     updateUserProfile(profileObj)
-      .then(() => setLoading(false))
+      .then(() => {
+        setLoading(false);
+        if (location?.state?.from) {
+          navigate(location?.state?.from, { replace: true });
+          return;
+        }
+        if (location?.state?.prev) {
+          navigate(location?.state?.prev, { replace: true });
+          return;
+        }
+      })
       .catch((error) => console.error(error));
   };
 
   /* Google PopUp SignIn Handler */
   const handlerGoogleLogin = () => {
+    setLoading(true);
     googleLoginHandler()
       .then(async ({ user }) => {
         await postUserOnMongo(user, "buyer", user.displayName, user.photoURL);
         await requestToken(user.uid);
         toast.success("Successfully Registered New Account");
         setActiveUser(user);
+        setLoading(false);
         if (location?.state?.from) {
           navigate(location?.state?.from, { replace: true });
           return;
@@ -136,6 +146,7 @@ export default function Register() {
       .catch((error) => {
         toast.error("FAILED to Register");
         setAuthLoading(false);
+        setLoading(false);
         setError(error);
       });
   };

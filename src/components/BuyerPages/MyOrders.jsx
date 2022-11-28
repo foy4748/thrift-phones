@@ -5,7 +5,7 @@ const SERVER =
 
 // Auth Related
 import { userContext } from "../../Contexts/AuthContext";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 import Loader from "../Shared/Loader";
 
@@ -14,6 +14,10 @@ import { Table, Container, Button } from "react-bootstrap";
 
 export default function MyOrders() {
   const { activeUser, authLoading } = useContext(userContext);
+
+  useEffect(() => {
+    window.document.title = "My Orders";
+  }, []);
 
   const { data: myOrders, status } = useQuery({
     queryKey: [activeUser?.uid],

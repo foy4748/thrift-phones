@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 
 // Auth Related
 import { userContext } from "../../Contexts/AuthContext";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Loader from "../Shared/Loader";
@@ -27,6 +27,10 @@ export default function AddAProduct() {
     reset,
     formState: { errors },
   } = useForm();
+
+  useEffect(() => {
+    window.document.title = `Seller | Add a Product`;
+  }, []);
 
   const [categories, categoriesLoading] = useGetCategories();
   const { activeUser, authLoading } = useContext(userContext);
@@ -99,7 +103,7 @@ export default function AddAProduct() {
       setIsUploading(false);
     }
   };
-  if (authLoading || categoriesLoading) {
+  if (authLoading || categoriesLoading || isUploading) {
     return <Loader />;
   }
   return (

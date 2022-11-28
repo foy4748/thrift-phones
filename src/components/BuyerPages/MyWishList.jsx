@@ -10,13 +10,16 @@ import { Link } from "react-router-dom";
 
 // Auth Related
 import { userContext } from "../../Contexts/AuthContext";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 
 import BookingModal from "./BookingModal";
 
 export default function MyWishList() {
   const { activeUser, authLoading } = useContext(userContext);
   const [activeProduct, setActiveProduct] = useState(null);
+  useEffect(() => {
+    window.document.title = "My Wish List";
+  }, []);
   const buyer_uid = activeUser?.uid;
   const {
     data: myWishListProducts,

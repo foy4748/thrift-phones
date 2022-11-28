@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 
 // Auth Related
 import { userContext } from "../../Contexts/AuthContext";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 
 import toast from "react-hot-toast";
 import Loader from "../Shared/Loader";
@@ -14,6 +14,9 @@ import Loader from "../Shared/Loader";
 export default function MyProducts() {
   const [isLoading, setIsLoading] = useState(false);
   const { activeUser } = useContext(userContext);
+  useEffect(() => {
+    window.document.title = `Seller | My Products`;
+  }, []);
   // Loading Data
   const seller_uid = activeUser?.uid;
   const {

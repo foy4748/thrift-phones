@@ -157,7 +157,7 @@ const CheckoutForm = ({
       />
       <button
         type="submit"
-        className="btn btn-primary"
+        className="btn btn-primary text-center"
         disabled={!stripe || !clientSecret || processing || paid}
       >
         {processing ? "Processing..." : paid ? "Paid" : "Pay"}
@@ -193,32 +193,52 @@ export default function PaymentPage() {
     },
   });
 
+  useEffect(() => {
+    window.document.title = `Payment | ${
+      product?.productName ? product?.productName : ""
+    }`;
+  }, [product]);
+
   if (status === "loading" || authLoading) {
     return <Loader />;
   }
 
   return (
-    <div>
+    <div className="mb-5">
       <h1>Payment</h1>
-      <div className="mx-auto" style={{ maxWidth: "800px" }}>
-        <p>
-          Product Name: <strong>{product.productName}</strong>{" "}
-        </p>
-        <p>
-          Price: <strong>$ {product.resalePrice}</strong>{" "}
-        </p>
-        <Elements stripe={stripePromise}>
-          <CheckoutForm
-            price={product?.resalePrice || 1}
-            productPurchased={product}
-            product_id={product_id}
-            buyerName={activeUser.displayName}
-            buyer_email={activeUser.email}
-            buyer_uid={activeUser.uid}
-            paid={product?.paid}
-            refetch={refetch}
-          />
-        </Elements>
+      <div className="mx-auto d-md-flex" style={{ maxWidth: "800px" }}>
+        <picture>
+          <img src={product.photoURL} alt={product.productName} />
+        </picture>
+        <div>
+          <p>
+            <strong>{product.productName}</strong>{" "}
+          </p>
+          <p>Condition: {product?.condition?.toUpperCase()}</p>
+          <p>
+            Seller Name: <strong>{product?.sellerName}</strong>{" "}
+          </p>
+          <p>
+            Price: <strong>$ {product.resalePrice}</strong>{" "}
+          </p>
+          <p>
+            <strong>Description</strong>
+          </p>
+          <p className="text-justify">{product.description}</p>
+          <p>Fill out your Credit card info</p>
+          <Elements stripe={stripePromise}>
+            <CheckoutForm
+              price={product?.resalePrice || 1}
+              productPurchased={product}
+              product_id={product_id}
+              buyerName={activeUser.displayName}
+              buyer_email={activeUser.email}
+              buyer_uid={activeUser.uid}
+              paid={product?.paid}
+              refetch={refetch}
+            />
+          </Elements>
+        </div>
       </div>
     </div>
   );

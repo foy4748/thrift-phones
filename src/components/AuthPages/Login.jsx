@@ -40,6 +40,7 @@ export default function Login() {
 
   /* Login Form Submit Handler */
   const handleSubmit = (e) => {
+    setLoading(true);
     e.preventDefault();
     setError(null);
     const form = e.target;
@@ -51,33 +52,39 @@ export default function Login() {
         const userStatus = await checkUserOnMongo(user.uid);
         if (!userStatus) {
           setActiveUser(null);
+          setLoading(false);
           return;
         }
         setActiveUser(user);
-        form.reset();
         toast.success("Successfully Logged In");
         navigate(location?.state?.from || location?.state?.prev || "/", {
           replace: true,
         });
+        form.reset();
+        setLoading(false);
       })
       .catch((error) => {
         console.error(error);
         toast.error("FAILED to Login");
         setError(error.message);
+        setLoading(false);
         setAuthLoading(false);
       });
   };
 
   /* Google PopUp SignIn Handler */
   const handlerGoogleLogin = () => {
+    setLoading(true);
     googleLoginHandler()
       .then(async ({ user }) => {
         const userStatus = await checkUserOnMongo(user.uid);
         if (!userStatus) {
+          setLoading(false);
           return;
         }
         setActiveUser(user);
         toast.success("Successfully Logged In");
+        setLoading(false);
         navigate(location?.state?.from || location?.state?.prev || "/", {
           replace: true,
         });
@@ -85,11 +92,12 @@ export default function Login() {
       .catch((error) => {
         setError(error);
         toast.error("FAILED to Login");
+        setLoading(false);
         setAuthLoading(false);
       });
   };
 
-  /* Github PopUp SignIn Handler */
+  /* Github PopUp SignIn Handler 
   const handlerGithubLogin = () => {
     githubLoginHandler()
       .then(async ({ user }) => {
@@ -108,7 +116,7 @@ export default function Login() {
         toast.error("FAILED to Login");
         setAuthLoading(false);
       });
-  };
+  };*/
   //--------------------------------------------
 
   if (authLoading || loading) {

@@ -4,13 +4,14 @@ const SERVER =
 import Loader from "../Shared/Loader";
 import { Table, Container, Button } from "react-bootstrap";
 import toast from "react-hot-toast";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
 export default function AllSellers() {
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
   let role = "seller";
   const {
     data: allSellers,
@@ -25,8 +26,13 @@ export default function AllSellers() {
     },
   });
 
+  useEffect(() => {
+    window.document.title = "Admin | All Sellers";
+  }, []);
+
   // Make Verified Seller
   const makeVerified = async (id, uid, verified, displayName) => {
+    setIsVerifying(true);
     const url = `${SERVER}/users`;
     try {
       const authtoken = window.localStorage.getItem("authtoken");
@@ -46,13 +52,16 @@ export default function AllSellers() {
             !verified ? "verified seller!!" : "ordinary seller."
           }`
         );
+        setIsVerifying(false);
       } else {
         toast.error("Something went wrong");
+        setIsVerifying(false);
       }
       refetch();
     } catch (error) {
       console.error(error);
       toast.error("Something went wrong");
+      setIsVerifying(false);
     }
   };
 
@@ -87,7 +96,7 @@ export default function AllSellers() {
     }
   };
 
-  if (status === "loading" || isDeleting) {
+  if (status === "loading" || isDeleting || isVerifying) {
     return <Loader />;
   }
   if (!allSellers?.length) {

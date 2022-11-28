@@ -48,7 +48,7 @@ export default function ProductCard({
             {"  "}Location: {location}
           </Card.Text>
 
-          <div className="d-flex flex-wrap justify-content-between">
+          <div className="d-flex flex-wrap justify-content-between mb-2">
             <Card.Text>
               <strong>
                 <FontAwesomeIcon icon={faSackDollar} /> Original Price: ${" "}
@@ -73,7 +73,7 @@ export default function ProductCard({
           )}
           <Card.Text>
             <FontAwesomeIcon icon={faClock} />
-            {"  "}Used for
+            {"  "}Used for{"  "}
             {new Date().getFullYear() - purchaseYear < 1
               ? "less than a year"
               : `${new Date().getFullYear() - purchaseYear} years`}

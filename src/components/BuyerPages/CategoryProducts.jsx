@@ -1,12 +1,11 @@
 const SERVER =
   import.meta.env.VITE_SERVER_ADDRESS || import.meta.env.VITE_DEV_SERVER;
 
-import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 import { userContext } from "../../Contexts/AuthContext";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { Row, Container } from "react-bootstrap";
 import Loader from "../Shared/Loader";
@@ -42,6 +41,14 @@ export default function CategoryProducts() {
       return data;
     },
   });
+
+  useEffect(() => {
+    window.document.title = `Category | ${
+      categoryProducts?.category?.category_name
+        ? categoryProducts?.category?.category_name
+        : ""
+    }`;
+  }, [categoryProducts]);
 
   // Modal States
   const [isOpenBookingModal, setIsOpenBookingModal] = useState(false);

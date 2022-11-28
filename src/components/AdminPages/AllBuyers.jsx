@@ -8,11 +8,16 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function AllBuyers() {
   let role = "buyer";
   const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    window.document.title = "Admin | All Buyers";
+  }, []);
+
   const {
     data: allBuyers,
     status,
