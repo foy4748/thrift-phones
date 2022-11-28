@@ -4,7 +4,8 @@ import useCheckRole from "../../Hooks/useCheckRole";
 import Loader from "../Shared/Loader";
 
 import { userContext } from "../../Contexts/AuthContext";
-import { useContext } from "react";
+import { useContext, useRef, useEffect } from "react";
+
 export default function DashboardNavNavLinks() {
   const { activeUser, authLoading } = useContext(userContext);
   const [buyerRole, buyerRoleLoading] = useCheckRole(activeUser?.uid, "buyer");
@@ -13,7 +14,12 @@ export default function DashboardNavNavLinks() {
     "seller"
   );
   const [adminRole, adminRoleLoading] = useCheckRole(activeUser?.uid, "admin");
-
+  const linkBundle = useRef();
+  useEffect(() => {
+    if (linkBundle.current) {
+      linkBundle.current.firstElementChild.click();
+    }
+  }, []);
   const privateNavItems = () => {
     if (buyerRole) {
       return (
@@ -70,7 +76,9 @@ export default function DashboardNavNavLinks() {
     <section>
       <div className="d-lg-flex align-items-center">
         <h1 className="h4 m-0 p-0">Dashboard</h1>
-        <ul className="d-flex my-3 p-2">{privateNavItems()}</ul>
+        <ul className="d-flex my-3 p-2" ref={linkBundle}>
+          {privateNavItems()}
+        </ul>
       </div>
     </section>
   );
