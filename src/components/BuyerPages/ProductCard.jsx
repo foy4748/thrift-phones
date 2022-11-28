@@ -46,7 +46,7 @@ export default function ProductCard({
           <Card.Title>{productName}</Card.Title>
           <Card.Text>
             {" "}
-            <FontAwesomeIcon icon={faLocationDot} />
+            <FontAwesomeIcon icon={faLocationDot} style={{ color: "salmon" }} />
             {"  "}Location: {location}
           </Card.Text>
 
@@ -55,28 +55,38 @@ export default function ProductCard({
           <div className="d-flex flex-wrap justify-content-between mb-2">
             <Card.Text>
               <strong>
-                <FontAwesomeIcon icon={faSackDollar} /> Original Price: ${" "}
-                {originalPrice}
+                <FontAwesomeIcon
+                  icon={faSackDollar}
+                  style={{ color: "#85bb65" }}
+                />{" "}
+                Original Price: $ {originalPrice}
               </strong>
             </Card.Text>
             <Card.Text>
               <strong>
-                <FontAwesomeIcon icon={faMoneyBillWave} /> Resale Price: ${" "}
-                {resalePrice}
+                <FontAwesomeIcon
+                  style={{ color: "#85bb65" }}
+                  icon={faMoneyBillWave}
+                />{" "}
+                Resale Price: $ {resalePrice}
               </strong>
             </Card.Text>
           </div>
           <Card.Text>
-            <FontAwesomeIcon icon={faUser} /> Sold by: {sellerName}
+            <FontAwesomeIcon icon={faUser} style={{ color: "gray" }} /> Sold by:{" "}
+            {sellerName}
           </Card.Text>
           {verified && (
             <Card.Text>
               Verfied Seller{" "}
-              <FontAwesomeIcon style={{ color: "blue" }} icon={faCircleCheck} />
+              <FontAwesomeIcon
+                style={{ color: "#00b8cb" }}
+                icon={faCircleCheck}
+              />
             </Card.Text>
           )}
           <Card.Text>
-            <FontAwesomeIcon icon={faClock} />
+            <FontAwesomeIcon icon={faClock} style={{ color: "lightblue" }} />
             {"  "}Used for{"  "}
             {new Date().getFullYear() - purchaseYear < 1
               ? "less than a year"
