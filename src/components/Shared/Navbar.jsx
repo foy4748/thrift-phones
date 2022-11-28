@@ -167,7 +167,7 @@ export default function NavBar({ darkActive, setDarkActive }) {
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
               <NavDropdown title="Category" id="category-nav-dropdown">
-                {categories.length &&
+                {categories.length ? (
                   categories.map(({ _id, category_name }) => (
                     <NavDropdown.Item
                       as={Link}
@@ -176,7 +176,10 @@ export default function NavBar({ darkActive, setDarkActive }) {
                     >
                       {category_name}
                     </NavDropdown.Item>
-                  ))}
+                  ))
+                ) : (
+                  <NavDropdown.Item as={Link}>Loading...</NavDropdown.Item>
+                )}
               </NavDropdown>
               {activeUser && activeUser?.uid && (
                 <>

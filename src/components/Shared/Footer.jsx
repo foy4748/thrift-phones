@@ -19,13 +19,22 @@ export default function FooterSection() {
               <hr className="clearfix w-100 d-md-none pb-0" />
 
               <div className="col-md-3 mb-md-0 mb-3">
-                <h5 className="text-uppercase">Pages</h5>
+                <h5 className="text-uppercase">Categories</h5>
                 <ul className="list-unstyled">
                   <li>
-                    <Link to="/services">Services</Link>
+                    <Link to={"/category/637e7c78e4a3ee128ee5f90f"}>
+                      Android
+                    </Link>
                   </li>
                   <li>
-                    <Link to="/blogs">Blogs</Link>
+                    <Link to={"/category/637e7c97e4a3ee128ee5f911"}>
+                      iPhone
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to={"/category/637e7caae4a3ee128ee5f913"}>
+                      Windows
+                    </Link>
                   </li>
                 </ul>
               </div>
