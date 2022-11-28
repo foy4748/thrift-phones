@@ -4,6 +4,7 @@ const SERVER =
 import Advertise from "./Advertise";
 import Slider from "./Slider";
 import InfoCards from "./InfoCards";
+import Brands from "./Brands";
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
       <Slider />
       <Advertise />
       <InfoCards />
+      <Brands />
     </div>
   );
 }
