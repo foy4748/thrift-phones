@@ -1,5 +1,4 @@
 import { NavLink } from "react-router-dom";
-import { Container } from "react-bootstrap";
 import useCheckRole from "../../Hooks/useCheckRole";
 import Loader from "../Shared/Loader";
 
@@ -21,24 +20,45 @@ export default function DashboardNavNavLinks() {
     }
   }, []);
   const privateNavItems = () => {
-    if (buyerRole) {
+    const activeStyle = {
+      color: "white",
+      backgroundColor: "var(--primary-color)",
+      padding: "0 0.5rem",
+      borderRadius: "3rem",
+    };
+    if (buyerRole && !buyerRoleLoading) {
       return (
         <>
           <li className="m-0 p-2">
-            <NavLink to="/dashboard/my-orders">My Orders</NavLink>
+            <NavLink
+              style={({ isActive }) => (isActive ? activeStyle : undefined)}
+              to="/dashboard/my-orders"
+            >
+              My Orders
+            </NavLink>
           </li>
           <li className="m-0 p-2">
-            <NavLink to="/dashboard/my-wishlist">My Wish List</NavLink>
+            <NavLink
+              style={({ isActive }) => (isActive ? activeStyle : undefined)}
+              to="/dashboard/my-wishlist"
+            >
+              My Wish List
+            </NavLink>
           </li>
         </>
       );
     }
 
-    if (adminRole) {
+    if (adminRole && !adminRoleLoading) {
       return (
         <>
           <li className="m-0 p-2">
-            <NavLink to="/dashboard/all-buyers">All Buyers</NavLink>
+            <NavLink
+              style={({ isActive }) => (isActive ? activeStyle : undefined)}
+              to="/dashboard/all-buyers"
+            >
+              All Buyers
+            </NavLink>
           </li>
           <li className="m-0 p-2">
             <NavLink to="/dashboard/all-sellers">All Sellers</NavLink>
@@ -47,14 +67,24 @@ export default function DashboardNavNavLinks() {
       );
     }
 
-    if (sellerRole) {
+    if (sellerRole && !sellerRole) {
       return (
         <>
           <li className="m-0 p-2">
-            <NavLink to="/dashboard/add-product">Add a product</NavLink>
+            <NavLink
+              style={({ isActive }) => (isActive ? activeStyle : undefined)}
+              to="/dashboard/add-product"
+            >
+              Add a product
+            </NavLink>
           </li>
           <li className="m-0 p-2">
-            <NavLink to="/dashboard/my-products">My Products</NavLink>
+            <NavLink
+              style={({ isActive }) => (isActive ? activeStyle : undefined)}
+              to="/dashboard/my-products"
+            >
+              My Products
+            </NavLink>
           </li>
         </>
       );
