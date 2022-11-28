@@ -55,7 +55,12 @@ export default function DashboardNavNavLinks() {
             </NavLink>
           </li>
           <li className="m-0 p-2">
-            <NavLink to="/dashboard/all-sellers">All Sellers</NavLink>
+            <NavLink
+              style={({ isActive }) => (isActive ? activeStyle : undefined)}
+              to="/dashboard/all-sellers"
+            >
+              All Sellers
+            </NavLink>
           </li>
         </>
       );
