@@ -2,8 +2,8 @@
 import { NavLink, Link, useLocation, useNavigate } from "react-router-dom";
 import { useRef, useContext } from "react";
 import useGetCategories from "../../Hooks/useGetCategories";
-import useCheckRole from "../../Hooks/useCheckRole";
 
+import Loader from "./Loader";
 const AppName = import.meta.env.VITE_AppName;
 
 import {
@@ -35,11 +35,6 @@ export default function NavBar({ darkActive, setDarkActive }) {
   const navigate = useNavigate();
 
   const activeUser = auth.currentUser;
-  const [sellerRole, sellerRoleLoading] = useCheckRole(
-    activeUser?.uid,
-    "seller"
-  );
-  const [adminRole, adminRoleLoading] = useCheckRole(activeUser?.uid, "admin");
   //--------------------------------------
 
   // Event Handlers
@@ -118,57 +113,6 @@ export default function NavBar({ darkActive, setDarkActive }) {
     );
   };
 
-  // Role Based Routes
-  const privateNavItems = () => {
-    if (adminRoleLoading || sellerRoleLoading) {
-      return (
-        <>
-          <NavDropdown.Item as={Link} to="/" onClick={closeMenu}>
-            Loading...
-          </NavDropdown.Item>
-        </>
-      );
-    }
-
-    if (!adminRole && !sellerRole) {
-      return (
-        <>
-          <NavDropdown.Item as={Link} to="/my-orders" onClick={closeMenu}>
-            My Orders
-          </NavDropdown.Item>
-          <NavDropdown.Item as={Link} to="/my-wishlist" onClick={closeMenu}>
-            My Wish List
-          </NavDropdown.Item>
-        </>
-      );
-    }
-
-    if (adminRole) {
-      return (
-        <>
-          <NavDropdown.Item as={Link} to="/all-buyers" onClick={closeMenu}>
-            All Buyers
-          </NavDropdown.Item>
-          <NavDropdown.Item as={Link} to="/all-sellers" onClick={closeMenu}>
-            All Sellers
-          </NavDropdown.Item>
-        </>
-      );
-    }
-
-    if (sellerRole) {
-      return (
-        <>
-          <NavDropdown.Item as={Link} to="/add-product" onClick={closeMenu}>
-            Add a product
-          </NavDropdown.Item>
-          <NavDropdown.Item as={Link} to="/my-products" onClick={closeMenu}>
-            My Products
-          </NavDropdown.Item>
-        </>
-      );
-    }
-  };
   //-------------------------
 
   // Light & Dark Theme Switch JSX
@@ -235,9 +179,15 @@ export default function NavBar({ darkActive, setDarkActive }) {
                   ))}
               </NavDropdown>
               {activeUser && activeUser?.uid && (
-                <NavDropdown title="Dashboard" id="dashboard-nav-dropdown">
-                  {privateNavItems()}
-                </NavDropdown>
+                <>
+                  <Nav.Link
+                    as={NavLink}
+                    onClick={() => closeMenu()}
+                    to="/dashboard"
+                  >
+                    Dashboard
+                  </Nav.Link>
+                </>
               )}
               <Nav.Link as={NavLink} onClick={closeMenu} to="/blogs">
                 Blogs
@@ -278,3 +228,9 @@ export default function NavBar({ darkActive, setDarkActive }) {
     </>
   );
 }
+
+/*
+                <NavDropdown title="Dashboard" id="dashboard-nav-dropdown">
+                  {privateNavItems()}
+                </NavDropdown>
+				*/

@@ -3,6 +3,7 @@ import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../components/Shared/MainLayout";
 
 import Home from "../components/Home/Home";
+import AuthContext from "../Contexts/AuthContext";
 
 // Route handlers
 import ErrorPage from "../components/Shared/ErrorPage";
@@ -33,6 +34,10 @@ import AllSellers from "../components/AdminPages/AllSellers";
 // Blog Page
 import Blogs from "../components/Blogs/Blogs";
 
+// Dashboard Page
+import DashboardLayout from "../components/Shared/DashboardLayout";
+import DashboardNavLinks from "../components/DashboardPages/DashboardNavLinks";
+
 // Private Routes ------
 
 const routerObj = [
@@ -61,7 +66,27 @@ const routerObj = [
         ),
       },
       {
-        path: "/my-orders",
+        path: "/blogs",
+        element: <Blogs />,
+      },
+      {
+        path: "*",
+        element: <ErrorPage />,
+      },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: (
+      <AuthContext>
+        <PrivateRoute>
+          <DashboardLayout />
+        </PrivateRoute>
+      </AuthContext>
+    ),
+    children: [
+      {
+        path: "/dashboard/my-orders",
         element: (
           <PrivateRoute>
             <RoleProtectedRoute role="buyer">
@@ -71,7 +96,7 @@ const routerObj = [
         ),
       },
       {
-        path: "/my-wishlist",
+        path: "/dashboard/my-wishlist",
         element: (
           <PrivateRoute>
             <RoleProtectedRoute role="buyer">
@@ -81,7 +106,7 @@ const routerObj = [
         ),
       },
       {
-        path: "/payment/:product_id",
+        path: "/dashboard/payment/:product_id",
         element: (
           <PrivateRoute>
             <RoleProtectedRoute role="buyer">
@@ -91,7 +116,7 @@ const routerObj = [
         ),
       },
       {
-        path: "/add-product",
+        path: "/dashboard/add-product",
         element: (
           <PrivateRoute>
             <RoleProtectedRoute role="seller">
@@ -101,7 +126,7 @@ const routerObj = [
         ),
       },
       {
-        path: "/my-products",
+        path: "/dashboard/my-products",
         element: (
           <PrivateRoute>
             <RoleProtectedRoute role="seller">
@@ -111,7 +136,7 @@ const routerObj = [
         ),
       },
       {
-        path: "/all-buyers",
+        path: "/dashboard/all-buyers",
         element: (
           <PrivateRoute>
             <RoleProtectedRoute role="admin">
@@ -121,7 +146,7 @@ const routerObj = [
         ),
       },
       {
-        path: "/all-sellers",
+        path: "/dashboard/all-sellers",
         element: (
           <PrivateRoute>
             <RoleProtectedRoute role="admin">
@@ -129,14 +154,6 @@ const routerObj = [
             </RoleProtectedRoute>
           </PrivateRoute>
         ),
-      },
-      {
-        path: "/blogs",
-        element: <Blogs />,
-      },
-      {
-        path: "*",
-        element: <ErrorPage />,
       },
     ],
   },

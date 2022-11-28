@@ -149,7 +149,7 @@ export default function MyWishList() {
                       </td>
                       <td>
                         {!paid ? (
-                          <Link to={`/payment/${_id}`}>
+                          <Link to={`/dashboard/payment/${_id}`}>
                             <Button size="sm">Pay</Button>
                           </Link>
                         ) : (

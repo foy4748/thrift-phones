@@ -129,7 +129,7 @@ export default function AllSellers() {
                       <td>{idx + 1}</td>
                       <td>{displayName}</td>
                       <td>{email}</td>
-                      <td>
+                      <td className="text-center">
                         <Button
                           variant="danger"
                           size="sm"
@@ -139,7 +139,7 @@ export default function AllSellers() {
                           Delete
                         </Button>
                       </td>
-                      <td className="d-flex justify-content-center">
+                      <td className="text-center">
                         <Button
                           className="m-0"
                           variant={verified ? "warning" : "primary"}

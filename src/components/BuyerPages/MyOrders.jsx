@@ -82,7 +82,7 @@ export default function MyOrders() {
                       <td>{resalePrice}</td>
                       <td>
                         {!paid ? (
-                          <Link to={`/payment/${product_id}`}>
+                          <Link to={`/dashboard/payment/${product_id}`}>
                             <Button size="sm">Pay</Button>
                           </Link>
                         ) : (

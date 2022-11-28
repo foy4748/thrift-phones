@@ -91,7 +91,7 @@ export default function AllBuyers() {
                     <td>{idx + 1}</td>
                     <td>{displayName}</td>
                     <td>{email}</td>
-                    <td>
+                    <td className="text-center">
                       <Button
                         variant="danger"
                         size="sm"
