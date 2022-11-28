@@ -3,12 +3,14 @@ const SERVER =
 
 import Advertise from "./Advertise";
 import Slider from "./Slider";
+import InfoCards from "./InfoCards";
 
 export default function Home() {
   return (
     <div>
       <Slider />
       <Advertise />
+      <InfoCards />
     </div>
   );
 }
