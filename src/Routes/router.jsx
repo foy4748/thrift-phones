@@ -86,6 +86,15 @@ const routerObj = [
     ),
     children: [
       {
+        path: "/dashboard",
+        element: (
+          <div>
+            <h1>Select a Route ⬆</h1>
+          </div>
+        ),
+      },
+
+      {
         path: "/dashboard/my-orders",
         element: (
           <PrivateRoute>

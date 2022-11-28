@@ -92,7 +92,7 @@ export default function AddAProduct() {
         toast.success("Successfully POSTed product");
         setIsUploading(false);
         reset();
-        navigate("/my-products");
+        navigate("/dashboard/my-products");
       } else {
         toast.error("FAILED to post product");
         setIsUploading(false);

@@ -171,7 +171,7 @@ export default function NavBar({ darkActive, setDarkActive }) {
                   categories.map(({ _id, category_name }) => (
                     <NavDropdown.Item
                       as={Link}
-                      to={`category/${_id}`}
+                      to={`/category/${_id}`}
                       key={_id}
                     >
                       {category_name}

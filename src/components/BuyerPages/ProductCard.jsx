@@ -23,6 +23,7 @@ export default function ProductCard({
     productName,
     description,
     postedTime,
+    condition,
     location,
     sellerName,
     originalPrice,
@@ -47,6 +48,8 @@ export default function ProductCard({
             <FontAwesomeIcon icon={faLocationDot} />
             {"  "}Location: {location}
           </Card.Text>
+
+          <Card.Text>Condition: {condition.toUpperCase()}</Card.Text>
 
           <div className="d-flex flex-wrap justify-content-between mb-2">
             <Card.Text>
