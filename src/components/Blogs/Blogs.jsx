@@ -13,112 +13,143 @@ export default function Blogs() {
     <Container>
       <h1>Blogs</h1>
       <div className={styles.blogContainer}>
-        <div className="mb-5"></div>
         <div className={styles.singleBlog}>
-          <h1>1. Difference between SQL and NoSQL</h1>
+          <h1>
+            1. What are the different ways to manage a state in a React
+            application?
+          </h1>
           <div className={styles.answer}>
-            <h2>SQL</h2>
             <p className={styles.answer}>
-              SQL stands for <strong>Structured Query Language.</strong> This is
-              used to query a database which has a predefined structure of data
-              tables, that maintains a relation between them. Instead of
-              replicating any String type information, their unique instance are
-              stored in separate tables. Each row of the string contains a
-              primary index and a foreign key which points to a row of another
-              table. SQL is used to write a query which <strong>JOINS</strong>{" "}
-              the foreign key relations, then retrieves the rows and columns
-              that represents the query.
+              There are four kinds of React States to Manage -- <br /> 1. Local
+              State , 2. Global State , 3. Server State , 4. URL State{" "}
+            </p>
+            <h2>Local State</h2>
+            <p className={styles.answer}>
+              Local States are states declared in a component. Using useState or
+              useReducer can be used to manage this with ease.
             </p>
             <p className={styles.answer}>
-              SQL servers can be upgraded "Vertically", which means increasing
-              server capacities RAM, Storage, CPU etc. Since, all the tables
-              should be present at the same machine.
-            </p>
-            <h2>NoSQL</h2>
-            <p className={styles.answer}>
-              NoSQL doesn’t involve storing data in separate tables or
-              maintaining any relation between them. There is no need to
-              predefine a structure of the data. NoSQL simply stores the data in
-              a key-value pair by indexing them uniquely. NoSQL is actually{" "}
-              <strong>Document based database</strong> which means all the
-              necessary information fields / columns will be stored in a single
-              document/row. Since, it doesn’t require to maintain any structured
-              data tables or any relation between tables, it requires far less
-              maintenance than SQL.
+              useState can manage only one state value at a time. The state
+              value can be primitive or non-primitive. It provides the initial
+              state and a dispatcher function to alter the state.
             </p>
             <p className={styles.answer}>
-              NoSQL servers can be upgraded "Horizontally", which means, simply
-              buying more server machines. Since, there is no table or any
-              relation between them, it doesn’t require to all the collections
-              storing in the same machine.o
+              On the other hand, useReducer is the advanced version of useState.
+              Instead of only an initial state, it can also receive a reducer
+              which is very similar to the reducer function we pass to an
+              Array.prototype.reduce() method. The reducer is simply a function,
+              which holds the logic of altering the states. These states are
+              stored in an accumulator. Whenever a dispatcher provided by the
+              reducer is executed, it actually accumulates those new states.
+            </p>
+            <h2>Global State</h2>
+            <p className={styles.answer}>
+              There are some popular third-party tools for managing states
+              globally across a React application. Such as Redux. This really
+              scales a React App high, at ease. There are some similarities with
+              useReducer. But Redux has more convenient methods to manage many
+              states. A combination of useReducer and Context API may solve this
+              Global State managing problem. But it might not be practical in
+              the case of a large React App.
+            </p>
+            <h2>Server State</h2>
+            <p className={styles.answer}>
+              Since, React only deals with UI, and reacts when a state changes.
+              Managing server state via React’s built-in method is quite
+              cumbersome. React Query, SWR, etc. third-party packages come to
+              play in case of managing server state, without manually updating a
+              React state on each loading state while fetching data.
+            </p>
+            <h2>URL State</h2>
+            <p className={styles.answer}>
+              React Router DOM is the ultimate package for handling URL states
+              in a React App. It can read the client-side URL’s parameters, and
+              requests can be sent to the server using those parameters. Hence,
+              it becomes easier to load contents dynamically, baed on the URL
+              currently being visited.s
             </p>
           </div>
         </div>
         <div className={styles.singleBlog}>
-          <h1>2. What is JWT, and how does it work?</h1>
+          <h1>2. How does prototypical inheritance work?</h1>
           <p className={styles.answer}>
-            JWT stands for <strong>JSON Web Token</strong>. JWT is the result of
-            hashing a valid JSON string using a secret key and a proper hashing
-            algorithm. In short, JWT is a hashed string. A JWT has three
-            portions separated by two periods (.). They are — 1) Header, 2)
-            Payload, 3) Signature.
+            When we read a property from an object, and it’s missing, JavaScript
+            automatically takes it from the prototype. In programming, this is
+            called “prototypal inheritance”.
           </p>
           <p className={styles.answer}>
-            The header section contains the hash of the JSON which carries the
-            information of the hashing algorithm, which hash algorithm was used.
-            Payload sections contains the hash of the JSON string. Lastly, the
-            signature contains the hash of the secret key, which is bounded to
-            other portions.
-          </p>
-          <p className={styles.answer}>
-            If header or payload changes, the signature is no more valid. If any
-            of the character in the hash is altered, the token is no longer
-            valid. JWT is mostly used for **Authorization purpose**. After
-            successful authentication, a JWT is issued from the server. Then, to
-            access each protected API end point of the server, the token must be
-            sent with the Request. The secret key is stored in the server, only
-            server can validate and decode the token, and then send response
-            based on the information retrieved from the token.
+            A prototype chain is simply some sort of linked list, where the link
+            is between objects. Since JavaScript is a purely
+            functional/prototype-based programming language, it uses previously
+            created object structures as prototypes hence inheriting properties
+            and methods.
           </p>
         </div>
 
         <div className={styles.singleBlog}>
-          <h1>3. What is the difference between JavaScript and NodeJS?</h1>
+          <h1>3. What is a unit test? Why should we write unit tests?</h1>
           <p className={styles.answer}>
-            JavaScript is an interpreted, high level, prototype based functional
-            programming language. Mostly used in Web technology.
-          </p>
-          <p className={styles.answer}>
-            On the other hand, NodeJS is a runtime for JavaScript. It can
-            execute JavaScript code outside browser.
-          </p>
-          <p className={styles.answer}>
-            Years ago, JavaScript ould only be executed in a web browser. Web
-            browsers are designed to execute JavaScript code on user interaction
-            or some event. NodeJS is almost the same identical mechanism for
-            executing / running a JavaScript code, but outside the browser.
-          </p>
-          <p className={styles.answer}>
-            By outside the browser, it means in supported operating systems,
-            consoles etc. The slight difference is, NodeJS executes JavaScript
-            code in the context of the operating system, environment or the
-            console. It can access the CPU usage, File System or resources
-            available in the machine.
+            Unit testing involves testing an individual component, function, or
+            class. Writing unit test, allow a developer to check if the
+            component works in edge cases. Dealing with edge cases makes any
+            piece of code reliable to use in the future while developing an
+            extensive application and ensuring re-usability. It might be
+            cumbersome while writing a test case for very simple functionality.
+            But, in the end, it helps a lot, when it comes to integration tests.
           </p>
         </div>
         <div className={styles.singleBlog}>
-          <h1>4. How does NodeJS handle multiple requests at the same time?</h1>
+          <h1>4. Differences between React vs. Angular vs. Vue</h1>
+          <p className={styles.answer}> </p>
+          <h2>React</h2>
           <p className={styles.answer}>
-            NodeJS handles multiple requests at the same time, by queuing the
-            requests in Event Queue. Event Loop is the listener of the Event
-            Queue which listens to the request resolving event. It is an
-            infinite loop, which keeps iterating through Event Queue o listen if
-            any request is resolved. By storing requests in Event Queue, NodeJS
-            is always ready to receive multiple requests at same time{" "}
-            <strong>
-              without blocking the I / O (Input / Output) operation
-            </strong>
-            .{" "}
+            According to React’s official doc, React is a UI library, instead of
+            a framework. It doesn’t make the developer maintain a strict project
+            structure. There are some automated tools such as CRA
+            (create-react-app), Vite, Turbo Pack, etc. for scaffolding a fresh
+            React app.
+          </p>
+          <p className={styles.answer}>
+            React maintains a unidirectional data flow, which means, the UI
+            states are only propagated from a parent component to its children.
+            If a state changes, it re-calculates the DOM based on the new state
+            and then renders the calculated DOM. The React name comes from this
+            since it reacts to a state change.
+          </p>
+          <h2>Angular</h2>
+          <p className={styles.answer}>
+            Angular is a fully-fledged framework. It follows the MVC
+            (Model-View-Controller) design pattern. Its most recent version
+            doesn’t require following a strict rule of MVC since now it’s
+            component-based.
+          </p>
+          <p className={styles.answer}>
+            Each component in Angular contains a Template, a Class that defines
+            the application logic, and MetaData (Decorators). The metadata for a
+            component tells Angular where to find the building blocks that it
+            needs to create and present its view.
+          </p>
+          <p className={styles.answer}>
+            Angular templates are written in HTML but can also include Angular
+            template syntax with special directives to output reactive data and
+            render multiple elements, among other things.
+          </p>
+          <h2>Vue</h2>
+          <p className={styles.answer}>
+            Vue is a progressive framework because its functionality can be
+            extended with official and third-party packages, such as Vue Router
+            or Vuex, to turn it into an actual framework.
+          </p>
+          <p className={styles.answer}>
+            Components in Vue are small, self-contained, and can be reused
+            throughout the application. Single File Components (SFCs) with
+            the .vue extension contain HTML, CSS, and JavaScript so that all
+            relevant code resides in one file.
+          </p>
+          <p className={styles.answer}>
+            SFCs are the recommended way to organize code in Vue.js projects,
+            especially larger ones. Tools such as Webpack or Browserify are
+            required to transpile SFCs into working JavaScript code.
           </p>
         </div>
       </div>

@@ -120,8 +120,8 @@ export default function Register() {
   const handlerGoogleLogin = () => {
     googleLoginHandler()
       .then(async ({ user }) => {
-        await requestToken(user.uid);
         await postUserOnMongo(user, "buyer", user.displayName, user.photoURL);
+        await requestToken(user.uid);
         toast.success("Successfully Registered New Account");
         setActiveUser(user);
         if (location?.state?.from) {
@@ -140,10 +140,11 @@ export default function Register() {
       });
   };
 
-  /* Github PopUp SignIn Handler */
+  /* Github PopUp SignIn Handler
   const handlerGithubLogin = () => {
     githubLoginHandler()
       .then(async ({ user }) => {
+        await postUserOnMongo(user, "buyer", user.displayName, user.photoURL);
         await requestToken(user.uid);
         setActiveUser(user);
         toast.success("Successfully Registered New Account");
@@ -161,7 +162,8 @@ export default function Register() {
         setAuthLoading(false);
         setError(error);
       });
-  };
+  }; 
+	*/
   //--------------------------------------------
 
   if (authLoading || loading || isUploading) {
