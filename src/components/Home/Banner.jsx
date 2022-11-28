@@ -9,6 +9,17 @@ export default function Banner() {
           src={`/SliderPic1.jpg`}
           alt=""
         />
+        <Carousel.Caption className="centeringCaption">
+          <div className="d-flex justify-content-between">
+            <div className="leftPart">
+              <h1>Need a Phone ?</h1>
+              <p>Buy phones less than market price</p>
+              <Link to={"/category/637e7c78e4a3ee128ee5f90f"}>
+                <button className="boder btnPrimary">Android Phones</button>
+              </Link>
+            </div>
+          </div>
+        </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item interval={3000} key={2}>
         <img
@@ -16,6 +27,17 @@ export default function Banner() {
           src={`/SliderPic2.jpg`}
           alt=""
         />
+        <Carousel.Caption className="centeringCaption">
+          <div className="d-flex justify-content-between">
+            <div className="leftPart">
+              <h1>Fancy an iPhone?</h1>
+              <p>We have them too</p>
+              <Link to={"/category/637e7c97e4a3ee128ee5f911"}>
+                <button className="boder btnPrimary">Buy iPhones</button>
+              </Link>
+            </div>
+          </div>
+        </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item interval={3000} key={3}>
         <img
@@ -23,6 +45,17 @@ export default function Banner() {
           src={`/SliderPic3.jpg`}
           alt=""
         />
+        <Carousel.Caption className="centeringCaption">
+          <div className="d-flex justify-content-between">
+            <div className="leftPart">
+              <h1>Windows Phone</h1>
+              <p>Find fancy old collections</p>
+              <Link to={"/category/637e7caae4a3ee128ee5f913"}>
+                <button className="boder btnPrimary">Windows Phones</button>
+              </Link>
+            </div>
+          </div>
+        </Carousel.Caption>
       </Carousel.Item>
     </Carousel>
   );
