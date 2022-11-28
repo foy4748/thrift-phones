@@ -1,4 +1,4 @@
-import { Card, Col, Button } from "react-bootstrap";
+import { Card, Col } from "react-bootstrap";
 import moment from "moment";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,6 +8,7 @@ import {
   faSackDollar,
   faUser,
   faClock,
+  faHeart,
   faMoneyBillWave,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -87,24 +88,25 @@ export default function ProductCard({
           </Card.Text>
           <Card.Text>{description}</Card.Text>
           <div className="d-flex flex-wrap justify-content-between">
-            <Button
-              className="mt-1"
+            <button
+              className="mt-1 btnPrimary"
               onClick={() => handleAddtoWishList(_id, seller_uid)}
             >
+              {" "}
+              <FontAwesomeIcon
+                icon={faHeart}
+                style={{ color: "crimson" }}
+              />{" "}
               Add to wish list
-            </Button>
-            <Button
-              className="mt-1"
-              variant="primary"
-              onClick={() => handleOpen(_id)}
-            >
+            </button>
+            <button className="mt-1 btnPrimary" onClick={() => handleOpen(_id)}>
               Book Now
-            </Button>
+            </button>
           </div>
         </Card.Body>
         <Card.Footer>
           <small className="text-muted">
-            Posted: {moment(postedTime).format("DD MMM, YYYY")}
+            Posted on: {moment(postedTime).format("DD MMM, YYYY")}
           </small>
         </Card.Footer>
       </Card>

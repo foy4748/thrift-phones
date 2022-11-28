@@ -157,7 +157,7 @@ const CheckoutForm = ({
       />
       <button
         type="submit"
-        className="btn btn-primary text-center"
+        className="btnPrimary text-center"
         disabled={!stripe || !clientSecret || processing || paid}
       >
         {processing ? "Processing..." : paid ? "Paid" : "Pay"}
@@ -207,8 +207,12 @@ export default function PaymentPage() {
     <div className="mb-5">
       <h1>Payment</h1>
       <div className="mx-auto d-md-flex" style={{ maxWidth: "800px" }}>
-        <picture>
-          <img src={product.photoURL} alt={product.productName} />
+        <picture className="w-100">
+          <img
+            className="w-100 p-3"
+            src={product.photoURL}
+            alt={product.productName}
+          />
         </picture>
         <div>
           <p>

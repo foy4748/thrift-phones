@@ -211,7 +211,7 @@ export default function AddAProduct() {
             />
           </Form.Group>
           <div className="d-flex justify-content-center">
-            <input className="btn btn-primary" type="submit" value="Submit" />
+            <input className="btnPrimary" type="submit" value="Submit" />
           </div>
         </Form>
       </Container>
