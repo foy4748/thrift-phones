@@ -1,6 +1,3 @@
-const SERVER =
-  import.meta.env.VITE_SERVER_ADDRESS || import.meta.env.VITE_DEV_SERVER;
-
 const STRIPE_PK = import.meta.env.VITE_STRIPE_PK;
 
 // This example shows you how to set up React Stripe.js and use Elements.
@@ -25,6 +22,7 @@ import {
 } from "@stripe/react-stripe-js";
 
 import "./stripe.css";
+import axiosClient from "../../axios";
 
 const CheckoutForm = ({
   productPurchased,
@@ -43,16 +41,9 @@ const CheckoutForm = ({
   const navigate = useNavigate();
 
   useEffect(() => {
-    const options = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ price }),
-    };
-    fetch(`${SERVER}/create-payment-intent`, options)
-      .then((res) => res.json())
-      .then((data) => {
-        setClientSecret(data.clientSecret);
-      });
+    axiosClient.post(`/create-payment-intent`, { price }).then(({ data }) => {
+      setClientSecret(data.clientSecret);
+    });
   }, [price]);
 
   const handleSubmit = async (event) => {
@@ -104,16 +95,8 @@ const CheckoutForm = ({
       paymentIntent["buyer_uid"] = buyer_uid;
       paymentIntent["productPurchased"] = productPurchased;
 
-      const options = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(paymentIntent),
-      };
       try {
-        const res = await fetch(`${SERVER}/payment`, options);
-        const result = await res.json();
+        const { result } = await axiosClient.post(`/payment`, paymentIntent);
         if (result.updateResponse.acknowledged) {
           setProcessing(false);
           toast.success("Successfully Paid!");
@@ -181,9 +164,8 @@ export default function PaymentPage() {
   } = useQuery({
     queryKey: [product_id],
     queryFn: async () => {
-      const url = `${SERVER}/products?product_id=${product_id}`;
-      const res = await fetch(url);
-      const product = await res.json();
+      const url = `/products?product_id=${product_id}`;
+      const { data: product } = await axiosClient.get(url);
       let data;
       if (!product.length) {
         data = 0;

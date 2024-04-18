@@ -1,6 +1,3 @@
-const SERVER =
-  import.meta.env.VITE_SERVER_ADDRESS || import.meta.env.VITE_DEV_SERVER;
-
 import { Table, Container, Button } from "react-bootstrap";
 import { useQuery } from "@tanstack/react-query";
 
@@ -10,6 +7,7 @@ import { useContext, useState, useEffect } from "react";
 
 import toast from "react-hot-toast";
 import Loader from "../Shared/Loader";
+import axiosClient from "../../axios";
 
 export default function MyProducts() {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,16 +25,8 @@ export default function MyProducts() {
   } = useQuery({
     queryKey: [seller_uid],
     queryFn: async () => {
-      const authtoken = window.localStorage.getItem("authtoken");
-      const options = {
-        headers: {
-          "Content-Type": "application/json",
-          authtoken,
-        },
-      };
-      const url = `${SERVER}/my-products`;
-      const res = await fetch(url, options);
-      const data = await res.json();
+      const url = `/my-products`;
+      const { data } = await axiosClient(url);
       return data;
     },
   });
@@ -45,17 +35,9 @@ export default function MyProducts() {
   const handleDeletion = async (product_id) => {
     setIsLoading(true);
     try {
-      const authtoken = window.localStorage.getItem("authtoken");
-      const options = {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          product_id,
-          authtoken,
-        },
-      };
-      const res = await fetch(`${SERVER}/delete-products`, options);
-      const result = await res.json();
+      const { data: result } = await axiosClient.delete(`/delete-products`, {
+        headers: { product_id },
+      });
       if (result.acknowledged) {
         toast.success("Successfully deleted");
         setIsLoading(false);
@@ -72,18 +54,12 @@ export default function MyProducts() {
   // Handle Advertise
   const handleAdvertise = async (product_id, advertised) => {
     setIsLoading(true);
-    const authtoken = window.localStorage.getItem("authtoken");
-    const options = {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        product_id,
-        authtoken,
-      },
-      body: JSON.stringify({ advertised: !advertised }),
-    };
     try {
-      const res = await fetch(`${SERVER}/products`, options);
+      const res = await axiosClient.patch(
+        `/products`,
+        { advertised: !advertised },
+        { headers: { product_id } }
+      );
       const result = await res.json();
       if (result.acknowledged) {
         toast.success("Successfully changed advertised state");

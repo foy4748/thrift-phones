@@ -2,9 +2,6 @@ import { Modal, Button, Form } from "react-bootstrap";
 import Loader from "../Shared/Loader";
 import { useState } from "react";
 
-const SERVER =
-  import.meta.env.VITE_SERVER_ADDRESS || import.meta.env.VITE_DEV_SERVER;
-
 import toast from "react-hot-toast";
 
 export default function BookingModal({ payload }) {
@@ -51,19 +48,8 @@ export default function BookingModal({ payload }) {
       contactPhoneNo,
     };
 
-    const authtoken = window.localStorage.getItem("authtoken");
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        authtoken,
-      },
-      body: JSON.stringify(payload),
-    };
-
     try {
-      const res = await fetch(`${SERVER}/bookings`, options);
-      const result = await res.json();
+      const { data: result } = await axiosClient(`/bookings`, payload);
       if (result.acknowledged) {
         toast.success(`Successfully Booked ${productName}`);
         setIsPosting(false);

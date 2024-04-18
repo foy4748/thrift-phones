@@ -1,6 +1,3 @@
-const SERVER =
-  import.meta.env.VITE_SERVER_ADDRESS || import.meta.env.VITE_DEV_SERVER;
-
 import { Table, Container, Button } from "react-bootstrap";
 
 import { useQuery } from "@tanstack/react-query";
@@ -13,6 +10,7 @@ import { userContext } from "../../Contexts/AuthContext";
 import { useContext, useState, useEffect } from "react";
 
 import BookingModal from "./BookingModal";
+import axiosClient from "../../axios";
 
 export default function MyWishList() {
   const { activeUser, authLoading } = useContext(userContext);
@@ -29,16 +27,8 @@ export default function MyWishList() {
   } = useQuery({
     queryKey: [buyer_uid],
     queryFn: async () => {
-      const authtoken = window.localStorage.getItem("authtoken");
-      const options = {
-        headers: {
-          "Content-Type": "application/json",
-          authtoken,
-        },
-      };
-      const url = `${SERVER}/wishlist`;
-      const res = await fetch(url, options);
-      const data = await res.json();
+      const url = `/wishlist`;
+      const { data } = await axiosClient.get(url);
       return data;
     },
   });
@@ -56,18 +46,10 @@ export default function MyWishList() {
 
   // Remove Wish Listed Items
   const handleRemoveWishList = async (id) => {
-    const authtoken = window.localStorage.getItem("authtoken");
-    const options = {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        product_id: id,
-        authtoken,
-      },
-    };
     try {
-      const res = await fetch(`${SERVER}/wishlist`, options);
-      const result = await res.json();
+      const { data: result } = await axiosClient.delete(`/wishlist`, {
+        headers: { product_id: id },
+      });
       if (result.acknowledged) {
         toast.success("Succesfully Removed from Wish List");
         refetch();

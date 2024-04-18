@@ -1,6 +1,3 @@
-const SERVER =
-  import.meta.env.VITE_SERVER_ADDRESS || import.meta.env.VITE_DEV_SERVER;
-
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
@@ -15,6 +12,7 @@ import useCheckRole from "../../Hooks/useCheckRole";
 
 import ProductCard from "../BuyerPages/ProductCard";
 import BookingModal from "./BookingModal";
+import axiosClient from "../../axios";
 
 export default function CategoryProducts() {
   const { categoryId } = useParams();
@@ -29,14 +27,12 @@ export default function CategoryProducts() {
   } = useQuery({
     queryKey: [categoryId],
     queryFn: async () => {
-      const url = `${SERVER}/products?categoryId=${categoryId}`;
-      const categoryName = await fetch(
-        `${SERVER}/categories?categoryId=${categoryId}`
+      const url = `/products?categoryId=${categoryId}`;
+      const { data: category } = await axiosClient.get(
+        `/categories?categoryId=${categoryId}`
       );
-      const res = await fetch(url);
+      const { data: products } = await axiosClient.get(url);
 
-      const category = await categoryName.json();
-      const products = await res.json();
       const data = { category: category[0], products };
       return data;
     },
@@ -80,18 +76,11 @@ export default function CategoryProducts() {
         })
         .catch((error) => console.error(error));
     }
-    const authtoken = window.localStorage.getItem("authtoken");
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        authtoken,
-      },
-      body: JSON.stringify({ product_id, seller_uid }),
-    };
     try {
-      const res = await fetch(`${SERVER}/wishlist`, options);
-      const result = await res.json();
+      const { data: result } = await axiosClient.post(`/wishlist`, {
+        product_id,
+        seller_uid,
+      });
       if (result.acknowledged) {
         toast.success("Added to your Wish List");
       } else {

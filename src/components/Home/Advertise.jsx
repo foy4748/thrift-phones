@@ -1,6 +1,3 @@
-const SERVER =
-  import.meta.env.VITE_SERVER_ADDRESS || import.meta.env.VITE_DEV_SERVER;
-
 import { useQuery } from "@tanstack/react-query";
 import Loader from "../Shared/Loader";
 
@@ -15,6 +12,7 @@ import { useContext, useState } from "react";
 import ProductCard from "../BuyerPages/ProductCard";
 import toast from "react-hot-toast";
 import useCheckRole from "../../Hooks/useCheckRole";
+import axiosClient from "../../axios";
 
 // ---------------------------
 
@@ -31,9 +29,8 @@ export default function Advertise() {
   } = useQuery({
     queryKey: [advertised],
     queryFn: async () => {
-      const url = `${SERVER}/products?advertised=${advertised}`;
-      const res = await fetch(url);
-      const data = await res.json();
+      const url = `/products?advertised=${advertised}`;
+      const { data } = await axiosClient.get(url);
       return data;
     },
   });
@@ -84,18 +81,11 @@ export default function Advertise() {
         })
         .catch((error) => console.error(error));
     }
-    const authtoken = window.localStorage.getItem("authtoken");
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        authtoken,
-      },
-      body: JSON.stringify({ product_id, seller_uid }),
-    };
     try {
-      const res = await fetch(`${SERVER}/wishlist`, options);
-      const result = await res.json();
+      const { data: result } = await axiosClient.post(`/wishlist`, {
+        product_id,
+        seller_uid,
+      });
       if (result.acknowledged) {
         toast.success("Added to your Wish List");
       } else {

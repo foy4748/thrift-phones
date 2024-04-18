@@ -1,5 +1,3 @@
-const SERVER =
-  import.meta.env.VITE_SERVER_ADDRESS || import.meta.env.VITE_DEV_SERVER;
 const IMG_BB_KEY = import.meta.env.VITE_IMG_BB_KEY;
 
 import { Form, Container } from "react-bootstrap";
@@ -75,19 +73,8 @@ export default function AddAProduct() {
     data["sellerName"] = activeUser?.displayName;
     data["verified"] = isVefifiedSeller;
 
-    const authtoken = window.localStorage.getItem("authtoken");
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        authtoken,
-      },
-      body: JSON.stringify(data),
-    };
-
     try {
-      const res = await fetch(`${SERVER}/products`, options);
-      const result = await res.json();
+      const { data: result } = await axiosClient.post(`/products`, data);
       if (result.acknowledged) {
         toast.success("Successfully POSTed product");
         setIsUploading(false);
