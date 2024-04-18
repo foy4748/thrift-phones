@@ -1,6 +1,3 @@
-const SERVER =
-  import.meta.env.VITE_SERVER_ADDRESS || import.meta.env.VITE_DEV_SERVER;
-
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
@@ -17,6 +14,7 @@ import {
 } from "firebase/auth";
 
 import { GoogleAuthProvider, GithubAuthProvider } from "firebase/auth";
+import axiosClient from "../axios";
 
 const auth = getAuth(firebaseApp);
 export { auth };
@@ -70,12 +68,9 @@ export default function AuthContext({ children }) {
 
   // TOKEN REQUESTING FUNCTION
   const requestToken = async (uid) => {
-    const headers = {
-      "Content-Type": "application/json",
-      uid,
-    };
-    const res = await fetch(`${SERVER}/auth`, { headers });
-    const result = await res.json();
+    const { data: result } = await axiosClient.get(`/auth`, {
+      headers: { uid },
+    });
     window.localStorage.setItem("authtoken", result.authtoken);
   };
 
@@ -84,16 +79,7 @@ export default function AuthContext({ children }) {
     try {
       const { uid, email } = user;
       const userObj = { uid, email, role: [role], displayName, photoURL };
-      const payload = JSON.stringify(userObj);
-      const options = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: payload,
-      };
-      const res = await fetch(`${SERVER}/users`, options);
-      const result = await res.json();
+      const { data: result } = await axiosClient.post(`/users`, userObj);
       console.log(result);
     } catch (error) {
       console.error(error);
@@ -107,22 +93,24 @@ export default function AuthContext({ children }) {
 
   // checking user whether deleted or not
   const checkUserOnMongo = async (uid) => {
-    const res = await fetch(`${SERVER}/users/${uid}`);
-    const result = res.json();
-    if (res.status == 404) {
-      toast.error("USER was DELETED by an ADMIN");
-      logOutHandler()
-        .then(() => {
-          navigate("/");
-        })
-        .catch((error) => {
-          console.error(error);
-          toast.error("FAILED TO LOGOUT");
-        });
-      return false;
-    } else {
+    try {
+      await axiosClient.get(`/users/${uid}`);
       await requestToken(uid);
       return true;
+    } catch (error) {
+      console.log(error);
+      if (error.response?.status == 404) {
+        toast.error("USER was DELETED by an ADMIN");
+        logOutHandler()
+          .then(() => {
+            navigate("/");
+          })
+          .catch((error) => {
+            console.error(error);
+            toast.error("FAILED TO LOGOUT");
+          });
+      }
+      return false;
     }
   };
   //------------------------------

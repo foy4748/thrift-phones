@@ -1,7 +1,5 @@
-const SERVER =
-  import.meta.env.VITE_SERVER_ADDRESS || import.meta.env.VITE_DEV_SERVER;
-
 import { useState, useEffect } from "react";
+import axiosClient from "../axios";
 
 export default function useCheckRole(uid, role) {
   const [userRoleLoading, setUserRoleLoading] = useState(true);
@@ -9,9 +7,8 @@ export default function useCheckRole(uid, role) {
 
   useEffect(() => {
     if (uid) {
-      fetch(`${SERVER}/users/${uid}`)
-        .then((res) => res.json())
-        .then((data) => {
+      axiosClient(`/users/${uid}`)
+        .then(({ data }) => {
           if (data?.role?.includes(role)) {
             setUserRole(true);
             setUserRoleLoading(false);

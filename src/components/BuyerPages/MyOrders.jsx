@@ -11,6 +11,7 @@ import Loader from "../Shared/Loader";
 
 import { Link } from "react-router-dom";
 import { Table, Container, Button } from "react-bootstrap";
+import axiosClient from "../../axios";
 
 export default function MyOrders() {
   const { activeUser, authLoading } = useContext(userContext);
@@ -22,16 +23,8 @@ export default function MyOrders() {
   const { data: myOrders, status } = useQuery({
     queryKey: [activeUser?.uid],
     queryFn: async () => {
-      const authtoken = window.localStorage.getItem("authtoken");
-      const options = {
-        headers: {
-          "Content-Type": "application/json",
-          authtoken,
-        },
-      };
-      const url = `${SERVER}/bookings?uid=${activeUser?.uid}`;
-      const res = await fetch(url, options);
-      const data = await res.json();
+      const url = `/bookings?uid=${activeUser?.uid}`;
+      const { data } = await axiosClient.get(url);
       return data;
     },
   });

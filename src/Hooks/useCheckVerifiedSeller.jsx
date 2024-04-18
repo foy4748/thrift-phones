@@ -1,23 +1,14 @@
-const SERVER =
-  import.meta.env.VITE_SERVER_ADDRESS || import.meta.env.VITE_DEV_SERVER;
-
 import { useState, useEffect } from "react";
+import axiosClient from "../axios";
 
 export default function useCheckVerifiedSeller(seller_uid) {
   const [isVefifiedSeller, setIsVerifiedSeller] = useState(false);
   useEffect(() => {
-    const authtoken = window.localStorage.getItem("authtoken");
-    const url = `${SERVER}/users/${seller_uid}`;
-    const options = {
-      headers: {
-        "Content-Type": "application/json",
-        authtoken,
-      },
-    };
+    const url = `/users/${seller_uid}`;
 
-    fetch(url, options)
-      .then((res) => res.json())
-      .then(({ verified }) => setIsVerifiedSeller(verified ? verified : false))
+    axiosClient
+      .get(url)
+      .then(({ data }) => setIsVerifiedSeller(data?.verified || false))
       .catch((error) => {
         console.error(error);
       });
