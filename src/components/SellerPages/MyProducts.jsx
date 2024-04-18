@@ -55,12 +55,11 @@ export default function MyProducts() {
   const handleAdvertise = async (product_id, advertised) => {
     setIsLoading(true);
     try {
-      const res = await axiosClient.patch(
+      const { data: result } = await axiosClient.patch(
         `/products`,
         { advertised: !advertised },
         { headers: { product_id } }
       );
-      const result = await res.json();
       if (result.acknowledged) {
         toast.success("Successfully changed advertised state");
         setIsLoading(false);

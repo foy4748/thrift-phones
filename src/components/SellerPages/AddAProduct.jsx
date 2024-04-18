@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { userContext } from "../../Contexts/AuthContext";
 import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axiosClient from "../../axios";
 
 import Loader from "../Shared/Loader";
 import useCheckVerifiedSeller from "../../Hooks/useCheckVerifiedSeller";
