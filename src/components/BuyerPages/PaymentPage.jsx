@@ -96,12 +96,16 @@ const CheckoutForm = ({
       paymentIntent["productPurchased"] = productPurchased;
 
       try {
-        const { result } = await axiosClient.post(`/payment`, paymentIntent);
-        if (result.updateResponse.acknowledged) {
+        const { data: result } = await axiosClient.post(
+          `/payment`,
+          paymentIntent
+        );
+        console.log(result);
+        if (result?.updateResponse?.acknowledged) {
           setProcessing(false);
           toast.success("Successfully Paid!");
           refetch();
-          navigate("/my-orders");
+          navigate("/dashboard/my-orders");
         }
       } catch (error) {
         console.error(error);

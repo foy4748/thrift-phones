@@ -1,6 +1,7 @@
 import { Modal, Button, Form } from "react-bootstrap";
 import Loader from "../Shared/Loader";
 import { useState } from "react";
+import axiosClient from "../../axios";
 
 import toast from "react-hot-toast";
 
@@ -49,7 +50,7 @@ export default function BookingModal({ payload }) {
     };
 
     try {
-      const { data: result } = await axiosClient(`/bookings`, payload);
+      const { data: result } = await axiosClient.post(`/bookings`, payload);
       if (result.acknowledged) {
         toast.success(`Successfully Booked ${productName}`);
         setIsPosting(false);
